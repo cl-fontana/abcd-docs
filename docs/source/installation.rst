@@ -160,7 +160,7 @@ These will download all the required packages for the Node.js server and install
 
 Once all the packages have been installed the system is ready to be run from the abcd main folder.
 
-.. _vendors_libraries:
+.. _vendors-libraries:
 
 Vendors libraries
 -----------------
