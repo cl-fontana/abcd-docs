@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = 'Lumache'
-copyright = '2021, Graziella'
-author = 'Graziella'
+project = 'ABCD documentation'
+copyright = '2022, European Union, Cristiano L. Fontana'
+author = 'Cristiano L. Fontana'
 
 release = '0.1'
 version = '0.1.0'
