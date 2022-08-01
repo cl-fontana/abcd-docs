@@ -1,9 +1,6 @@
-Template for the Read the Docs tutorial
-=======================================
+ABCD documentation repository
+=============================
 
-This GitHub template includes fictional Python library
-with some basic Sphinx docs.
+The ABCD documentation resides at:
 
-Read the tutorial here:
-
-https://docs.readthedocs.io/en/stable/tutorial/
+https://abcd-docs.readthedocs.io/en/latest/
