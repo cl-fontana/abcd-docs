@@ -104,7 +104,7 @@ Run the installation script in the folder in which ABCD was downloaded as::
     #############################
 
 In this preview the wordy parts of the installation were abridged for the sake of simplicity.
-If any of these steps fail, you should refer to the :ref:`manual-installation` section for a more detailed help.
+If any of these steps fail, you should refer to the section :ref:`manual-installation` for a more detailed help.
 
 .. warning::
     
@@ -117,7 +117,7 @@ If any of these steps fail, you should refer to the :ref:`manual-installation` s
     
     The hardware interfacing modules are not compiled, as they depend on specific libraries that might not be installed.
     The user should compile the suitable modules for the hardware (*e.g.* ``abcd``, ``abad2``, ``abps5000a``, ``abrp``, or ``absp``).
-    See :ref:`vendors-libraries` for suggestions on installing the vendors' libraries.
+    See the section :ref:`vendors-libraries` for suggestions on installing the vendors' libraries.
 
 .. _manual-installation:
 
@@ -153,7 +153,7 @@ The global Makefile compiles the whole system just by running in the abcd main d
 
     The hardware interfacing modules are not compiled, as they depend on specific libraries that might not be installed.
     The user should compile the suitable modules for the hardware (*e.g.* ``abcd``, ``abad2``, ``abps5000a``, ``abrp``, or ``absp``).
-    See :ref:`vendors-libraries` for suggestions on installing the vendors' libraries.
+    See the section :ref:`vendors-libraries` for suggestions on installing the vendors' libraries.
 
 The web-based user interface requires some modules for node.js that must be installed independently.
 From the abcd main directory::
