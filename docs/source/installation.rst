@@ -4,6 +4,9 @@
 Installation
 ============
 
+In principle ABCD could run on any `POSIX-compliant <https://en.wikipedia.org/wiki/POSIX>`_ system, but it is mainly used on Linux distributions.
+The modules that do not interface with some hardware are the most portable, on the other hand the hardware interfaces depend on vendors' drivers that might not be available on many systems.
+
 .. _download:
 
 Download
@@ -25,25 +28,33 @@ This command will create a new directory called ``abcd`` with the whole source c
 It is also possible to manually download a zip file with the source code from: <https://github.com/ec-jrc/abcd/archive/refs/heads/main.zip>
 But the method with git is the preferred one, as it will make easier to keep the source code updated.
 
-The rest of the installation instructions assume that ABCD was downloaded in ``~/abcd/``.
+.. note::
+
+    The rest of the installation instructions assume that ABCD was downloaded in ``~/abcd/``.
 
 .. _automatic-installation:
 
 Automatic installation
 ----------------------
 
-In principle ABCD could run on any `POSIX-compliant <https://en.wikipedia.org/wiki/POSIX>`_ system, but it is mainly used on Linux distributions.
-The modules that do not interface with some hardware are the most portable, on the other hand the hardware interfaces depend on vendors' drivers that might not be available on many systems.
-
-There is an installation script for the dependencies, that tries to identify the current Linux distribution and install the required packages.
+There is an automatic `installation script <https://github.com/ec-jrc/abcd/blob/main/install_dependencies.sh>`_, that tries to identify the current Linux distribution, install the required packages and compile the framework.
 The supported distributions for the installation script are: Ubuntu 20.04 LTS, Ubuntu 22.04 LTS, and Rocky Linux 8.
-The installation script runs some commands with ``sudo`` and thus the user should have the permissions for that.
-The following software is required in order to run the installation:
 
-* `Linux Standard Base (LSB) utilities <https://en.wikipedia.org/wiki/Linux_Standard_Base>`_, used only in the installer script to detect the Linux distribution.
+.. note::
+
+    The installation script runs some commands with ``sudo`` and thus the user should have the permissions for that.
+
+.. note::
+
+    The following software is required in order to run the installation: `Linux Standard Base (LSB) utilities <https://en.wikipedia.org/wiki/Linux_Standard_Base>`_, used only in the installer script to detect the Linux distribution.
+    It can be installed with:
+    
+    * On Debian and Ubuntu: ``apt-get install lsb-release``
+    * On CentOS and Fedora: ``dnf install redhat-lsb``
 
 Run the installation script in the folder in which ABCD was downloaded as::
    
+    user-tutorial@abcd-tutorial:~$ cd abcd
     user-tutorial@abcd-tutorial:~/abcd$ ./install_dependencies.sh
     ######################
     # Kernel name: Linux #
@@ -93,7 +104,7 @@ Run the installation script in the folder in which ABCD was downloaded as::
     #############################
 
 In this preview the wordy parts of the installation were abridged for the sake of simplicity.
-If any of these steps you should refer to the :ref:`manual-installation` section for a more detailed help.
+If any of these steps fail, you should refer to the :ref:`manual-installation` section for a more detailed help.
 
 .. warning::
     
@@ -106,7 +117,7 @@ If any of these steps you should refer to the :ref:`manual-installation` section
     
     The hardware interfacing modules are not compiled, as they depend on specific libraries that might not be installed.
     The user should compile the suitable modules for the hardware (*e.g.* ``abcd``, ``abad2``, ``abps5000a``, ``abrp``, or ``absp``).
-    See :ref:`vendors_libraries` for suggestions on installing the vendors' libraries.
+    See :ref:`vendors-libraries` for suggestions on installing the vendors' libraries.
 
 .. _manual-installation:
 
@@ -142,7 +153,7 @@ The global Makefile compiles the whole system just by running in the abcd main d
 
     The hardware interfacing modules are not compiled, as they depend on specific libraries that might not be installed.
     The user should compile the suitable modules for the hardware (*e.g.* ``abcd``, ``abad2``, ``abps5000a``, ``abrp``, or ``absp``).
-    See :ref:`vendors_libraries` for suggestions on installing the vendors' libraries.
+    See :ref:`vendors-libraries` for suggestions on installing the vendors' libraries.
 
 The web-based user interface requires some modules for node.js that must be installed independently.
 From the abcd main directory::
