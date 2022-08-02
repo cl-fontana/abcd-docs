@@ -137,8 +137,8 @@ The list of required libraries and tools is:
 * `Node.js <https://nodejs.org/>`_ 12 or later, with NPM, for running the web interface;
 * `zlib <https://zlib.net/>`_ and `libbzip2 <https://www.sourceware.org/bzip2/>`_, for data compression;
 
-Post-dependecies installation
-`````````````````````````````
+Post-installation steps
+```````````````````````
 
 When the dependecies are installed the ABCD system should be compiled.
 The default compiler is clang. It is also possible to change the compiler to gcc modifying the file `common_definitions.mk <https://github.com/ec-jrc/abcd/blob/main/common_definitions.mk>`_ in the abcd main directory.
@@ -162,6 +162,8 @@ From the abcd main directory::
     user-tutorial@abcd-tutorial:~/abcd/wit$ npm install
 
 These will download all the required packages for the Node.js server and install them locally in the ``wit/`` folder.
+If it is not a clean installation of ABCD, this step might lead to errors.
+If this occurs we suggest to delete the ``node_modules/`` directory in ``wit/`` and launch again ``npm install``.
 
 .. warning::
     
