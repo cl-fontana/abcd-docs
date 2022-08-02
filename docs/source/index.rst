@@ -22,3 +22,4 @@ Contents
    introduction
    hardware_support
    tutorial
+   replay
