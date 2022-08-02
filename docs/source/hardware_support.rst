@@ -34,7 +34,8 @@ The models that were tested with ABCD are:
 
 * ADQ214, with the standard firmware in the PXI version;
 * ADQ412, with the standard firmware in the PXI version;
-* ADQ14, with the firmware FWDAQ in the USB and PXI versions and with an experimental support for the FWPD.
+* ADQ14, with the standard firmware FWDAQ in the USB and PXI versions;
+* ADQ14, with an initial support for the FWPD in the PXI version.
 
 Digilent
 --------
