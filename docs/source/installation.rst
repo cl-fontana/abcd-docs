@@ -12,7 +12,7 @@ The modules that do not interface with some hardware are the most portable, on t
 Download
 --------
 
-The `git <https://git-scm.com/>`_ is required to download the latest version of the ABCD source code.
+`git <https://git-scm.com/>`_ is required to download the latest version of the ABCD source code.
 The ABCD repository can be downloaded as::
 
     user-tutorial@abcd-tutorial:~$ git clone https://github.com/ec-jrc/abcd.git
@@ -137,8 +137,10 @@ The list of required libraries and tools is:
 * `Node.js <https://nodejs.org/>`_ 12 or later, with NPM, for running the web interface;
 * `zlib <https://zlib.net/>`_ and `libbzip2 <https://www.sourceware.org/bzip2/>`_, for data compression;
 
-Post-installation steps
-```````````````````````
+.. _manual-installation-compilation:
+
+Post-installation step: compilation
+```````````````````````````````````
 
 When the dependecies are installed the ABCD system should be compiled.
 The default compiler is clang. It is also possible to change the compiler to gcc modifying the file `common_definitions.mk <https://github.com/ec-jrc/abcd/blob/main/common_definitions.mk>`_ in the abcd main directory.
@@ -154,6 +156,11 @@ The global Makefile compiles the whole system just by running in the abcd main d
     The hardware interfacing modules are not compiled, as they depend on specific libraries that might not be installed.
     The user should compile the suitable modules for the hardware (*e.g.* ``abcd``, ``abad2``, ``abps5000a``, ``abrp``, or ``absp``).
     See section :ref:`vendors-libraries` for suggestions on installing the vendors' libraries.
+
+.. _manual-installation-wit:
+
+Post-installation step: web-interface dependencies
+``````````````````````````````````````````````````
 
 The web-based user interface requires some modules for node.js that must be installed independently.
 From the abcd main directory::
