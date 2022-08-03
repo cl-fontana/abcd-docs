@@ -14,14 +14,13 @@ Check :doc:`hardware_support` for further information on the list of tested digi
 
    This project is under active development.
 
-Contents
---------
-
 .. toctree::
+   :numbered:
 
    introduction
    hardware_support
    tutorial
    startup
    interacting
+   data_files
    replay
