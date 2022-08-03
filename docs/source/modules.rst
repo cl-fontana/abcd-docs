@@ -24,7 +24,7 @@ On-line analysis modules
 
 * `spec <https://github.com/ec-jrc/abcd/tree/main/spec/>`_: Histogramming module, that calculates the energy histograms on-line.
 * `tofcalc <https://github.com/ec-jrc/abcd/tree/main/tofcalc/>`_: On-line Time of Flight calculation between some reference channels and the others.
-* `waan <https://github.com/ec-jrc/abcd/tree/main/waan/>`_: General purpose waveforms processing module that uses user-supplied pulse processing libraries.
+* `waan <https://github.com/ec-jrc/abcd/tree/main/waan/>`_: General purpose waveforms processing module that uses user-supplied pulse processing libraries (see :numref:`ch-waan` for more information).
 
 Datastream filters
 ------------------
@@ -32,7 +32,7 @@ Datastream filters
 Filters are usually implemented as simple loops reading from the sockets, selecting the processed events and forwarding the data to the next module.
 
 * `chafi <https://github.com/ec-jrc/abcd/tree/main/chafi/>`_: Channel filter, that filters the waveforms and processed events allowing the passage of only the data coming from a specific channel.
-* `cofi <https://github.com/ec-jrc/abcd/tree/main/cofi/>`_: Coincidence filter, that filters the processed events allowing the passage of only the data in coincidence in a specified time-window.
+* `cofi <https://github.com/ec-jrc/abcd/tree/main/cofi/>`_: Coincidence filter, that filters the processed events allowing the passage of only the data in coincidence in a specified time-window (see :numref:`ch-cofi` for more information).
 * `enfi <https://github.com/ec-jrc/abcd/tree/main/enfi/>`_: Energy filter that filters the processed events allowing the passage of only the data with an energy in a specified interval.
 * `pufi <https://github.com/ec-jrc/abcd/tree/main/pufi/>`_: Pulse Shape Discrimination filter, that selects data that fall in a polygon on the (energy, PSD) plane.
 
