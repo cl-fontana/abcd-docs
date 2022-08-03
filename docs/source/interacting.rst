@@ -25,6 +25,8 @@ It also shows the hostname in which the ABCD instance is running, to reduce conf
     When a module page is opened for the first time, it takes several seconds to load all the information from the module.
     If the page was already loaded, the switching between modules' interfaces is faster and more pleasant.
 
+.. _sec-interface-command-line:
+
 Command line interface
 ----------------------
 
