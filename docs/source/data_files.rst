@@ -1,3 +1,5 @@
+.. _ch-data-files:
+
 ============================
 Data files and serialization
 ============================
