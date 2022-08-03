@@ -27,3 +27,4 @@ Check :doc:`hardware_support` for further information on the list of tested digi
    saving_data
    replay
    waan
+   cofi
