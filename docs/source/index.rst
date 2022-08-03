@@ -23,4 +23,5 @@ Contents
    hardware_support
    tutorial
    startup
+   interacting
    replay
