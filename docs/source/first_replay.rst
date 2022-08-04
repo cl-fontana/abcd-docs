@@ -70,7 +70,6 @@ Nothing will be displayed on the screen.
 To interact with the user-interface connect with a web-browser to the address: http://127.0.0.1:8080/
 The user-interface is hosted by a local web-server running on the local computer.
 :numref:`fig-ABCD-landing-page-tutorial` shows the landing page that the browser should show; see :numref:`sec-check-running` if the browser cannot show the landing page.
-Navigate to the ``digitizer_interface``.
 
 .. figure:: images/ABCD_landing_page.png
     :name: fig-ABCD-landing-page-tutorial
@@ -78,6 +77,12 @@ Navigate to the ``digitizer_interface``.
     :alt: landing page of the ABCD web-based user interface
 
     Landing page of the ABCD web-based user interface.
+
+.. note::
+    To navigate between module pages, we suggest to open them in new browser tabs, instead of clicking on their links to change the page.
+    When a module page is opened for the first time, it takes several seconds to load all the information from the module.
+    If the page was already loaded, the switching between modules' interfaces is faster and more pleasant.
+
 
 The digitizer interface page
 ----------------------------
@@ -89,6 +94,7 @@ The digitizer interface page
 
     Page of the digitizer interface while running a replay of example data.
 
+Navigate now to the ``digitizer_interface`` page.
 :numref:`fig-ABCD-digitizer-interface-replay` shows the page of the digitizer interface.
 The top left pane shows the digitizer controls, that cannot do anything during a replay.
 In a normal situation they would be used to start and stop the acquisitions.
@@ -96,6 +102,9 @@ In a normal situation they would be used to start and stop the acquisitions.
 The other left panes show the replay of the status of the digitizer during the acquisition.
 The run-time is probably a bit too fast to be realistic, because a replay can be set to be faster than the real measurement.
 This is useful for reanalyzing experiments with very low acquisition rates.
+The shown rates are measured by the digitizer interface and tend to be a bit overestimated.
+The ICR rates are something specific of CAEN digitizers and they are reliable only in high-rate experiments (tens of kHz).
+The average rates are calculated over the whole acquisition time and are more realistic than the real-time ones.
 The *Events log* show the relevant acquisition events saved in the raw file, in this example it will show the start and stop events with their timestamps.
 The default replay is set to continuously repeat the data file, so in enough time the start and stop messages will accumulate.
 
@@ -119,3 +128,43 @@ Automatically storing the configuration could create permissions problems.
 .. warning::
     The digitizer interface will never store to a file the configuration that is sent from the web interface.
     The user should manually download the configuration from the web-interface, otherwise the changes will be lost.
+
+The waveforms display page
+--------------------------
+
+.. figure:: images/ABCD_waveforms_display.png
+    :name: fig-ABCD-waveforms-display
+    :width: 100%
+    :alt: page of the waveforms display of the ABCD web-based user interface
+
+    Page of the waveforms display while running a replay of example data.
+
+Move on to the ``waveforms_display`` page by opening the link in a new tab.
+:numref:`fig-ABCD-waveforms-display` shows the waveforms display page.
+This page is a display of a very limited subset of the waveforms: no more than one waveform per channel every 3 s.
+This is to give the highest priority to the data acquisition over the display.
+The minimum time between waveforms refreshes is customizable in the startup with the ``-p`` option of the ``wadi`` module.
+
+The top of the page shows the display controls:
+
+* Which channel is shown.
+* A switch to temporarily disable the waveforms update. It is useful in case a user wants to concentrate on the current waveform.
+* A button to download the current waveform in a `CSV file <https://en.wikipedia.org/wiki/Comma-separated_values>`_. It is useful for saving a particular waveform shown. If a user wants to visualize all the waveforms from a channel we suggest to save them to file and use the provided tools (see :numref:`sec-display-plotting`).
+* A button to reset the whole display of waveforms.
+
+The middle of the page shows the actual waveform.
+The top plot shows the waveform as read from the digitizer.
+The bottom plot may be present or not, depending on the digitizer settings or of the waveforms processing module.
+This second plot shows the so called *additional waveforms* that are waveforms associated with the physical one, but are used for debugging purposes of the waveforms processing module.
+The meaning, order and type of display of these additional waveforms depend on the digitizer model and on the waveforms processing libraries.
+Refer to the documentation of the digitizer or of the processing libraries for more information.
+In the specific case of :numref:`fig-ABCD-waveforms-display`:
+
+* Additional 0: shows a calculated Constant Fraction Discriminator (CFD) signal calculated from the waveform;
+* Additional 1: shows the zero-crossing of the CFD together with its absolute maximum and minimum;
+* Additional 2 and 3: show the integration gates used to determine the total energy and the Pulse Shape Discrimination information;
+* Additional 4: shows the cumulative integral of the waveform (relative to the baseline).
+
+In the plots a waveform may be hidden by clicking on it on the legend.
+It is possible to save the plot as a PNG image by hovering on the plot and clicking on the little camera on the top-righ.
+It is also possible to zoom into the plot by clicking and dragging.
