@@ -1,4 +1,4 @@
-.. _first-replay:
+.. _ch-first-replay:
 
 ==============================================
 Getting acquainted with a simulated experiment
@@ -70,6 +70,7 @@ Nothing will be displayed on the screen.
 To interact with the user-interface connect with a web-browser to the address: http://127.0.0.1:8080/
 The user-interface is hosted by a local web-server running on the local computer.
 :numref:`fig-ABCD-landing-page-tutorial` shows the landing page that the browser should show; see :numref:`sec-check-running` if the browser cannot show the landing page.
+Navigate to the ``digitizer_interface``.
 
 .. figure:: images/ABCD_landing_page.png
     :name: fig-ABCD-landing-page-tutorial
@@ -77,3 +78,44 @@ The user-interface is hosted by a local web-server running on the local computer
     :alt: landing page of the ABCD web-based user interface
 
     Landing page of the ABCD web-based user interface.
+
+The digitizer interface page
+----------------------------
+
+.. figure:: images/ABCD_digitizer_interface_replay.png
+    :name: fig-ABCD-digitizer-interface-replay
+    :width: 100%
+    :alt: page of the digitizer interface of the ABCD web-based user interface
+
+    Page of the digitizer interface while running a replay of example data.
+
+:numref:`fig-ABCD-digitizer-interface-replay` shows the page of the digitizer interface.
+The top left pane shows the digitizer controls, that cannot do anything during a replay.
+In a normal situation they would be used to start and stop the acquisitions.
+
+The other left panes show the replay of the status of the digitizer during the acquisition.
+The run-time is probably a bit too fast to be realistic, because a replay can be set to be faster than the real measurement.
+This is useful for reanalyzing experiments with very low acquisition rates.
+The *Events log* show the relevant acquisition events saved in the raw file, in this example it will show the start and stop events with their timestamps.
+The default replay is set to continuously repeat the data file, so in enough time the start and stop messages will accumulate.
+
+The right pane contains a text editor that allows the user to modify the digitizer configuration from the web-interface, without the need of restarting the whole system at every reconfiguration.
+The text editor is normally empty at the page load.
+The user can click to *Get configuration* to read the current configuration of the digitizer.
+The text editor will not update the configuration automatically, it always requires the user input.
+This is to lower the risk of losing configurations in the case of another user is changing the configuration from another computer.
+The user may change the configuration of the digitizer and send the updated version.
+The text editor will signal to the user if the configuration format is not a correct JSON.
+The digitizer interface will change the digitizer's configuration **only** when the **acquisition is not running**.
+If a configuration is sent during an acquisition it will be ignored.
+The digitizer interface will **never** store to a file the configuration that is sent from the web interface.
+The user should manually download the configuration from the web-interface, otherwise the changes will be lost.
+Automatically storing the configuration could create permissions problems.
+
+.. note::
+    The digitizer interface will change the digitizer's configuration only when the acquisition is not running.
+    If a configuration is sent during an acquisition it will be ignored.
+
+.. warning::
+    The digitizer interface will never store to a file the configuration that is sent from the web interface.
+    The user should manually download the configuration from the web-interface, otherwise the changes will be lost.
