@@ -16,7 +16,7 @@ Using the data saver
 --------------------
 
 Data files must be **opened before the start** of an acquisition, otherwise the acquired data before the file opening is lost.
-Normally startup scripts (see :numref:`startup`) set the data saving directory to: ``abcd/data/``.
+Normally startup scripts (see :numref:`ch-startup`) set the data saving directory to: ``abcd/data/``.
 The user must specify the file name in the web interface, if the file name is empty an automatic file name will be generated similar to: ``abcd_data_2022-08-03T16:56:05+0200_events.ade``.
 The user can supply a full path in the file name entry, then the file will be saved to that path.
 **There is no check** if a file already existing, so reopening files will **overwrite** them.
