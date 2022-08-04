@@ -1,11 +1,11 @@
-.. _startup:
+.. _ch-startup:
 
 =======================
 Starting up an instance
 =======================
 
 The `startup directory <https://github.com/ec-jrc/abcd/tree/main/startup>`_ contains some example scripts for starting up an ABCD instance.
-It is also possible to run an ABCD instance at the startup of the computer (see: :ref:`service`).
+It is also possible to run an ABCD instance at the startup of the computer (see: :numref:`service`).
 New users are suggested to start with `startup_example_replay.sh <https://github.com/ec-jrc/abcd/blob/main/startup/startup_example_replay.sh>`_, so they can see a working system with the example data.
 
 .. warning::
@@ -17,10 +17,14 @@ New users are suggested to start with `startup_example_replay.sh <https://github
     The user interface is web-based and thus the user should use a web-browser to connect to the address: http://127.0.0.1:8080
     The default port for the web-interface is 8080, but it can be changed in the configuration.
 
+.. _sec-startup-description:
+
 Scripts description
 -------------------
 
-* `startup_example_replay.sh <https://github.com/ec-jrc/abcd/blob/main/startup/startup_example_replay.sh>`_ shows a standard startup for a replay of previously acquired data. The script uses the example data in the `data/ folder <https://github.com/ec-jrc/abcd/tree/main/data>`_.  ``waan`` is used to process the waveforms. Optionally, the script may accept a data file as argument::
+* `startup_example_replay.sh <https://github.com/ec-jrc/abcd/blob/main/startup/startup_example_replay.sh>`_ shows a standard startup for a replay of previously acquired data.
+  The script uses the example data in the `data/ folder <https://github.com/ec-jrc/abcd/tree/main/data>`_.
+  ``waan`` is used to process the waveforms. Optionally, the script may accept a data file as argument::
 
     user-tutorial@abcd-tutorial:~/abcd/startup$ ./startup_example_replay.sh ~/abcd/data/example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_raw.adr.bz2
 
@@ -30,10 +34,10 @@ Scripts description
 * `C-BORD_startup.sh <https://github.com/ec-jrc/abcd/blob/main/startup/C-BORD_startup.sh>`_ shows a rather complex startup with two digitizers being acquired in parallel.
 * `stop_ABCD.sh <https://github.com/ec-jrc/abcd/blob/main/startup/stop_ABCD.sh>`_ is a script to stop a running instance of ABCD.
 
-.. _check-running:
+.. _sec-check-running:
 
-Checking if ABCD is running
----------------------------
+Checking if ABCD is running and troubleshooting
+-----------------------------------------------
 
 ABCD runs in the background and it is not directly evident if it is running.
 There are a few steps to check if it is running:
@@ -48,13 +52,21 @@ There are a few steps to check if it is running:
         user-tutorial@abcd-tutorial:~/abcd$ tmux ls
         no server running on /tmp/tmux-1000/default
 
-   then the startup failed. Was ABCD correctly installed and compiled? See :ref:`installation` and :ref:`manual-installation-compilation`.
-   Was the ``$ABCD_FOLDER`` correctly set? See warning in :ref:`startup`
+   then the startup failed. Was ABCD correctly installed and compiled? See :numref:`installation` and :numref:`manual-installation-compilation`.
+   Was the ``$ABCD_FOLDER`` correctly set? See warning in :numref:`ch-startup`
 
 #. The default setting of the web-based interface is to open port 8080, thus connect to: http://127.0.0.1:8080/
    If the browser shows the landing page of ABCD then the web-based interface is probably working.
-   If the browser is unable to connect to the page or cannot reach the page, then the web interface is not running.
-   Were the dependencies fo the web interface correctly installed? See :ref:`manual-installation-wit`.
+   If the browser is unable to connect to the page or cannot reach the page, then the web interface is probably not running.
+   Things to check:
+
+   - Were the dependencies fo the web interface correctly installed? See :numref:`manual-installation-wit`.
+   - Is there a firewall blocking the connections on that port?
+   - Is there another process running on the computer using that port?
+     The port 8080 is commonly used by local web-servers of various programs, for instance LabView uses that port.
+     Change the HTTP port in the startup script adding a ``-p`` option to the call of the web-server::
+
+        node app.js -p 9090 ./config.json
 
 #. Check at the bottom of the modules pages the connection status of the modules.
    If one of the modules is not running, try to run it directly in a terminal window. The module can show error messages to indicate the problem.
@@ -76,7 +88,7 @@ Automatic startup of ABCD at computer startup
 
 ABCD is designed to be always running in the computer and be remotely controlled.
 It is possible to run a startup script at the boot of the computer, without having to log in as a user.
-For more information about startup scripts see: :ref:`startup`.
+For more information about startup scripts see: :numref:`ch-startup`.
 
 systemd service installation
 ````````````````````````````
