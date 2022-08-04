@@ -75,7 +75,7 @@ The script can send a configuration file stored on disk to a running instance of
 .. warning::
     The filenames in the configuration shall follow the conventions of the UNIX dynamic linking functions.
     If the filename contains a slash (``/``) then the file is searched on the given path, if there is no slash then the library is searched in the standard system library folders.
-    If the user wants to use a local file in the current directory the filename shall start with ``./`` (_e.g._ ``./libCFD.so``).
+    If the user wants to use a local file in the current directory the filename shall start with ``./`` (*e.g.* ``./libCFD.so``).
 
 Each channel configuration may contain a user defined configuration.
 This information is then passed to the ``init`` functions of the user libraries, so the user does not have to hardcode the functions parameters.
