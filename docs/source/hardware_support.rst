@@ -6,7 +6,7 @@ Hardware support
 
 Various signal digitizers were tested with ABCD.
 There is support both for digitizers that provide only waveforms and for those that analyze on-board the waveforms.
-Refer to the section :ref:`vendors-libraries` for some tips for the installation of the relative drivers.
+Refer to :numref:`vendors-libraries` for some tips for the installation of the relative drivers.
 
 CAEN digitizers
 ---------------
