@@ -125,4 +125,4 @@ The currently running configuration of ``waan`` is also saved in the raw files.
 
 .. warning::
     Updated configurations that are sent to ``waan`` from the web-interface are never stored on disk.
-    The user should manually download the configuration from the web-interface, otherwise the changes will be lost (unless a raw file is opened).
+    The user should manually download the configuration from the web-interface, otherwise the changes will be lost (unless a raw file is currently opened).
