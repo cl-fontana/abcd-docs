@@ -68,7 +68,7 @@ The configuration file is in the `JSON <http://www.json.org/>`_ format.
 For each channel the user shall provide the filename of the libraries.
 The timestamp analysis may be omitted without putting a name on the relative library.
 The libraries may be modified and reloaded at runtime.
-A reconfiguration command always implies a reaload of the user libraries.
+A reconfiguration command always implies a reload of the user libraries.
 Configurations may be sent through the web-interface or using the python script `send_configuration.py <https://github.com/ec-jrc/abcd/blob/main/waan/send_configuration.py>`_.
 The script can send a configuration file stored on disk to a running instance of ``waan``.
 
@@ -79,6 +79,95 @@ The script can send a configuration file stored on disk to a running instance of
 
 Each channel configuration may contain a user defined configuration.
 This information is then passed to the ``init`` functions of the user libraries, so the user does not have to hardcode the functions parameters.
+
+Example configuration
+---------------------
+
+.. code-block:: JSON
+    :name: tab-waan-configuration-example
+    :caption: Example configuration of the ``waan`` module. This configuration is used in the example startup that replays example data.
+
+    {
+        "module": "waan",
+        "forward_waveforms": true,
+        "enable_additional": true,
+        "discard_messages": false,
+        "channels": [
+            {
+                "id": 1,
+                "name": "LaBr",
+                "enabled": true,
+                "user_libraries": {
+                    "timestamp": "src/libCFD.so",
+                    "energy": "src/libPSD.so"
+                },
+                "user_config": {
+                    "baseline_samples": 64,
+                    "smooth_samples": 16,
+                    "fraction": 0.75,
+                    "delay": 5,
+                    "zero_crossing_samples": 2,
+                    "fractional_bits": 10,
+                    "disable_shift": true,
+                    "pregate": 40,
+                    "short_gate": 30,
+                    "long_gate": 90,
+                    "pulse_polarity": "negative",
+                    "integrals_scaling": 2
+                }
+            },
+            {
+                "id": [ 6, 7 ],
+                "name": "CeBr",
+                "enabled": true,
+                "user_libraries": {
+                    "timestamp": "src/libCFD.so",
+                    "energy": "src/libPSD.so"
+                },
+                "user_config": {
+                    "baseline_samples": 64,
+                    "smooth_samples": 16,
+                    "fraction": 0.75,
+                    "delay": 20,
+                    "zero_crossing_samples": 2,
+                    "fractional_bits": 10,
+                    "disable_shift": true,
+                    "pregate": 40,
+                    "short_gate": 30,
+                    "long_gate": 90,
+                    "pulse_polarity": "negative",
+                    "integrals_scaling": 2
+                }
+            }
+        ]
+    }
+
+:numref:`tab-waan-configuration-example` shows a configuration example.
+More examples can be found in the ``waan/configs/`` folder.
+A detailed list of configurations follows:
+
+* ``forward_waveforms``: Bool value that enables the forwarding of the processed waveforms.
+  A user may disable the forwarding in order to avoid the data saver to save them in the raw files, thus reducing their dimensions.
+* ``enable_additional``: Bool value the enables the forwarding of the additional waveforms.
+  These waveforms are calculated by the user libraries for debugging purposes and in general do not need to be stored.
+  In case a user wants to store waveforms, the additional waveforms take up a lot of space and are preferably disabled.
+* ``discard_messages``: Bool value the enables the message dropping.
+  In case of experiments with very high data throughput the operating system kernel may decide to drop messages to preserve the memory usage.
+  This setting should disable that, but it depends on the operating system and it might not actually work.
+* ``channels``: Array value of objects.
+  This array contains the settings of the single channels.
+  Each channel object has the settings:
+
+  - ``id``: Integer value that indicates the channel to which these settings apply.
+    It may be substituted with an array of integer values, indicating that these settings are to be replicated to all these channels.
+  - ``name``: Just a mnemonic string for the user. The program actually ignores this setting.
+  - ``enabled``: Bool value to quickly enable or disable this channel settings.
+  - ``user_libraries``: An object containing the paths of the user libraries.
+    The ``timestamp`` library is optional, if not set then ``waan`` will use the digitizer timestamp for the waveform.
+    The ``energy`` library is mandatory.
+    If ``waan`` is unable to load the ``energy`` library then the channels in the ``id`` settings will be disabled.
+  - ``user_config``: An object that is provided to the user libraries by ``waan``.
+    Its content depend totally on the user libraries. Refer to their documentation.
 
 Libraries compilation
 ---------------------
@@ -94,6 +183,8 @@ Where the source code of the library would be ``src/libuser.c``.
 Example libraries
 -----------------
 
+Some example libraries are provided in the ``waan/src/`` directory.
+They are extensively commented and documented in the source code.
 These example libraries are provided:
 
 * ``libSimplePSD.c``: Calculates the energy and Pulse Shape information of a short pulse, by applying the double integration method. This is the simplest of the libraries, that can be a starting point for new users.
@@ -108,21 +199,4 @@ These example libraries are provided:
 User interface
 --------------
 
-.. figure:: images/ABCD_waan.png
-    :name: fig-ABCD-waan
-    :width: 50%
-    :alt: interface of the waan module
-
-    Web-interface of the general purpose waveforms analysis module ``waan``.
-
-:numref:`fig-ABCD-waan` shows the web-interface of ``waan``.
-On top it shows the measured rates of the enabled acquisition channels.
-The rates are shown after the filtering of the user libraries, so the user can immediately see the effect on the rate in case of filtering.
-If there are channels in the incoming datastream that are not enabled in ``waan`` they are shown as *channels that are not analyzed*.
-The text editor shows the current configuration by clicking on *Get configuration*.
-It is possible to modify the ``waan`` configuration by editing the text and clicking on *Send configuration*.
-The currently running configuration of ``waan`` is also saved in the raw files.
-
-.. warning::
-    Updated configurations that are sent to ``waan`` from the web-interface are never stored on disk.
-    The user should manually download the configuration from the web-interface, otherwise the changes will be lost (unless a raw file is currently opened).
+The tutorial has an extensive description of the web-based user interface (see :numref:`sec-waveforms-analysis-page`).
