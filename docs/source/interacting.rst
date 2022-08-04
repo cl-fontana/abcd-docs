@@ -69,6 +69,6 @@ There are also utilities in the ``bin/`` folder that give the possibility to int
 * `close_file.py <https://github.com/ec-jrc/abcd/blob/main/bin/close_file.py>`_: to close the currently open file in which data in being saved.
 * `send_command.py <https://github.com/ec-jrc/abcd/blob/main/bin/send_command.py>`_: to send a command to a module that support commands reception.
 * `stop_ABCD.sh <https://github.com/ec-jrc/abcd/blob/main/startup/stop_ABCD.sh>`_: to stop a currently running ABCD instance (this script is in the ``startup/`` directory).
-* `read_events.py <https://github.com/ec-jrc/abcd/blob/main/bin/read_events.py>`_: to read acquisition events from status sockets of modules. Used as a logger (see :ref:`acquisition-logging`).
+* `read_events.py <https://github.com/ec-jrc/abcd/blob/main/bin/read_events.py>`_: to read acquisition events from status sockets of modules. Used as a logger (see :numref:`acquisition-logging`).
 * `commands_receiver.py <https://github.com/ec-jrc/abcd/blob/main/bin/commands_receiver.py>`_: to create a commands socket to receive commands from other modules. Useful for debugging purposes.
 * `read_socket.py <https://github.com/ec-jrc/abcd/blob/main/bin/read_socket.py>`_: to read messages from PUB sockets. Useful for debugging purposes.
