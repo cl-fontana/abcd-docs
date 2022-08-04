@@ -168,3 +168,37 @@ In the specific case of :numref:`fig-ABCD-waveforms-display`:
 In the plots a waveform may be hidden by clicking on it on the legend.
 It is possible to save the plot as a PNG image by hovering on the plot and clicking on the little camera on the top-righ.
 It is also possible to zoom into the plot by clicking and dragging.
+
+.. _sec-waveforms-analysis-page:
+
+The waveforms analysis page
+---------------------------
+
+.. figure:: images/ABCD_waan.png
+    :name: fig-ABCD-waan
+    :width: 100%
+    :alt: page of interface of the waan module of the ABCD web-based user interface
+
+    Web-interface of the general purpose waveforms analysis module ``waan``.
+
+Move on to the ``waveforms_analysis`` page by opening the link in a new tab.
+:numref:`fig-ABCD-waan` shows the web-interface of the general purpose waveforms processing module ``waan``.
+The top panes show the measured rates of the enabled acquisition channels.
+The user libraries may be filtering signals and thus discarding data.
+The rates are shown after the filtering of the user libraries, so the user can immediately see the effect on the rate in case of filtering.
+If there are channels in the incoming datastream that are not enabled in ``waan`` they are shown as *channels that are not analyzed*.
+
+The user can click to *Get configuration* to read the current configuration of the waveforms processing.
+The text editor will not update the configuration automatically, it always requires the user input.
+This is to lower the risk of losing configurations in the case of another user is changing the configuration from another computer.
+The user may change the configuration and send the updated version in any moment, the new configuration will immediately take over.
+The text editor will signal to the user if the configuration format is not a correct JSON.
+The currently running configuration of ``waan`` is also saved in the raw files.
+
+.. warning::
+    Updated configurations that are sent to ``waan`` from the web-interface are never stored on disk.
+    The user should manually download the configuration from the web-interface, otherwise the changes will be lost (unless a raw file is currently opened).
+
+Here it is possible to change the analysis configuration.
+Try to modify some parameters and see how this immediately affect the waveforms display.
+Refer to :numref:`sec-waan-config` for more information about the configuration file and to :numref:`ch-waan` for more information about ``waan``.
