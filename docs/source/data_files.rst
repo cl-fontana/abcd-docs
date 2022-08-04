@@ -128,6 +128,8 @@ In the ``data/`` folder there are some examples of ABCD data files.
 There are events and waveforms files that can be used to test analysis scripts and raw files for examples of replaying old measurements (see :numref:`replay`).
 The raw and waveforms files have been compressed with bzip.
 
+.. _sec-display-plotting:
+
 Displaying and plotting saved files
 -----------------------------------
 
@@ -143,9 +145,24 @@ The events file can be plotted with the scripts in the ``bin/`` folder:
   It can also save the selected coincidence events to a CSV file.
 * `plot_Evst_simple.py <https://github.com/ec-jrc/abcd/blob/main/bin/plot_Evst_simple.py>`_: to plot the time dependency of the energy spectrum of a channel.
 * `plot_waveforms.py <https://github.com/ec-jrc/abcd/blob/main/bin/plot_waveforms.py>`_: interactive display of waveforms stored in a waveforms file.
-  It can also compute the Fourier transform of a waveform.
+  It can also compute the Fourier transform of a waveform (see :numref:`fig-waveforms-display` and :numref:`fig-waveforms-display-Fourier`).
 
 These scripts may also be used as example scripts for developing custom analysis procedures on the data files.
+
+.. figure:: images/waveforms_display.png
+    :name: fig-waveforms-display
+    :width: 100%
+    :alt: waveforms display from an example file
+
+    Display of a waveform saved in an example file.
+
+.. figure:: images/waveforms_display_Fourier.png
+    :name: fig-waveforms-display-Fourier
+    :width: 100%
+    :alt: waveforms display from an example file
+
+    Display of the Fourier transform of the waveform of :numref:`fig-waveforms-display`.
+
 
 Files conversion
 ----------------
