@@ -104,7 +104,7 @@ Run the installation script in the folder in which ABCD was downloaded as::
     #############################
 
 In this preview the wordy parts of the installation were abridged for the sake of simplicity.
-If any of these steps fail, you should refer to section :ref:`manual-installation` for a more detailed help.
+If any of these steps fail, you should refer to :numref:`manual-installation` for a more detailed help.
 
 .. warning::
     
@@ -117,14 +117,14 @@ If any of these steps fail, you should refer to section :ref:`manual-installatio
     
     The hardware interfacing modules are not compiled, as they depend on specific libraries that might not be installed.
     The user should compile the suitable modules for the hardware (*e.g.* ``abcd``, ``abad2``, ``abps5000a``, ``abrp``, or ``absp``).
-    See section :ref:`vendors-libraries` for suggestions on installing the vendors' libraries.
+    See :numref:`vendors-libraries` for suggestions on installing the vendors' libraries.
 
 .. _manual-installation:
 
 Manual installation
 -------------------
 
-If the installation script (see :ref:`automatic-installation`) fails or the system is not supported, it is still possible to manually install the dependencies.
+If the installation script (see :numref:`automatic-installation`) fails or the system is not supported, it is still possible to manually install the dependencies.
 The list of required libraries and tools is:
 
 * `git <https://git-scm.com/>`_, for fetching and updating the source code;
@@ -155,7 +155,7 @@ The global Makefile compiles the whole system just by running in the abcd main d
 
     The hardware interfacing modules are not compiled, as they depend on specific libraries that might not be installed.
     The user should compile the suitable modules for the hardware (*e.g.* ``abcd``, ``abad2``, ``abps5000a``, ``abrp``, or ``absp``).
-    See section :ref:`vendors-libraries` for suggestions on installing the vendors' libraries.
+    See :numref:`vendors-libraries` for suggestions on installing the vendors' libraries.
 
 .. _manual-installation-wit:
 
