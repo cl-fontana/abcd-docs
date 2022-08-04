@@ -88,7 +88,7 @@ The replaying program has an in-line help::
     	-B <size>: Events output buffers size, default: 1024
     	-s <pknum>: Skip pknum packets, default: 0
 
-The ``-T`` option works as the aforementioned ``--base_period`` option in the :ref:`replay-raw`.
+The ``-T`` option works as the aforementioned ``--base_period`` option in the :numref:`replay-raw`.
 The ``-B`` option sets the number of processed events that are shipped for each message.
 The messages structure is lost when the data is saved in the events file, thus the user has to choose the desired buffer size.
 
