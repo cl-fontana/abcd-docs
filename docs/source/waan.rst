@@ -80,6 +80,8 @@ The script can send a configuration file stored on disk to a running instance of
 Each channel configuration may contain a user defined configuration.
 This information is then passed to the ``init`` functions of the user libraries, so the user does not have to hardcode the functions parameters.
 
+.. _sec-waan-config:
+
 Example configuration
 ---------------------
 
