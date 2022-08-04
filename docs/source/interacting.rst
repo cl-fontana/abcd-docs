@@ -47,6 +47,8 @@ Refer to the `tmux documentation <https://github.com/tmux/tmux/wiki/Getting-Star
     :caption: Diagram of an attached tmux session running an instance of ABCD. Normally the first windows is a new bash instance, the ABCD modules are running on the other windows showed on the bottom of the session.
 
     +-----------------------------------------------------------------------------------+
+    |                                 Terminal window                                   |
+    +-----------------------------------------------------------------------------------+
     | user-tutorial@abcd-tutorial:~/abcd$                                               |
     |                                     ^                                             |
     |                                     |                                             |
