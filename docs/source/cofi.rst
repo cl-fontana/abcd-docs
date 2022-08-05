@@ -29,7 +29,7 @@ Coincidence windows
 -------------------
 
 .. code-block:: none
-    :name: diagram-coincidence-windows
+    :name: tab-diagram-coincidence-windows-cofi
     :caption: Diagram of the coincidence windows
 
                   Events from           Event from a
@@ -53,7 +53,7 @@ Coincidence windows
              -t_l <- Left edge                       Right edge -> t_r
                      of the window                of the window
 
-:numref:`diagram-coincidence-windows` shows a diagram of the coincidence windows defined by the module.
+:numref:`tab-diagram-coincidence-windows-cofi` shows a diagram of the coincidence windows defined by the module.
 
 Output
 ------
