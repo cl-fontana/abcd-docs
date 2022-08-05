@@ -34,6 +34,11 @@ Scripts description
 * `C-BORD_startup.sh <https://github.com/ec-jrc/abcd/blob/main/startup/C-BORD_startup.sh>`_ shows a rather complex startup with two digitizers being acquired in parallel.
 * `stop_ABCD.sh <https://github.com/ec-jrc/abcd/blob/main/startup/stop_ABCD.sh>`_ is a script to stop a running instance of ABCD.
 
+Shutting down ABCD
+------------------
+
+Use the script: `stop_ABCD.sh <https://github.com/ec-jrc/abcd/blob/main/startup/stop_ABCD.sh>`_.
+
 .. _sec-check-running:
 
 Checking if ABCD is running and troubleshooting
