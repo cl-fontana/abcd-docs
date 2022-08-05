@@ -61,6 +61,8 @@ The user might want to perform both analyses in the ``energy_analysis()`` functi
 The functions may be different for each acquisition channel, allowing the coexistence of different detectors on the same digitizer.
 A waveform may also be discarded by the user functions, in order to eliminate unwanted/noise events.
 
+For some considerations on how the timestamp is calculated see :numref:`ch-timestamps`.
+
 Configuration
 -------------
 
