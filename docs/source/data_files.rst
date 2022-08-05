@@ -116,7 +116,7 @@ The binary representation consists of a 16 bytes word with:
 The various analysis libraries of the waveforms analysis module ``waan`` normally use the *Q long* entry as the energy information.
 The *Q short* is used differently by the libraries, refer to the specific library, it is normally used for information relevant to Pulse Shape Discrimination.
 The *Group counter* entry is the number of the events that follow the current event that are in temporal coincidence with it.
-This entry is managed by the ``cofi`` module.
+This entry is managed by the ``cofi`` module (see :numref:`ch-cofi`).
 
 This binary protocol is used to store processed events in the events files and for sending the events over the data sockets.
 Most of the data filters and on-line processing would read and produce this kind of processed events.
