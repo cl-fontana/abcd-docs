@@ -149,20 +149,6 @@ The events file can be plotted with the scripts in the ``bin/`` folder:
 
 These scripts may also be used as example scripts for developing custom analysis procedures on the data files.
 
-.. figure:: images/waveforms_display.png
-    :name: fig-waveforms-display
-    :width: 100%
-    :alt: waveforms display from an example file
-
-    Display of a waveform saved in an example file.
-
-.. figure:: images/waveforms_display_Fourier.png
-    :name: fig-waveforms-display-Fourier
-    :width: 100%
-    :alt: waveforms display from an example file
-
-    Display of the Fourier transform of the waveform of :numref:`fig-waveforms-display`.
-
 .. _sec-files-conversion:
 
 Files conversion
