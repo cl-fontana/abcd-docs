@@ -11,6 +11,7 @@ Algorithm
 
 The ``cofi`` module works on data packets generating groups of events in coincidence with the *reference channels*.
 Reference channels are selected by the user as the channels giving the reference timestamp for the time differences calculations.
+This algorithm is the similar to the one employed by the ``tofcalc`` module (see :numref:`ch-tofcalc`).
 The applied algorithm is:
 
 1. **Sort** all the events in a packet according to the timestamps.
