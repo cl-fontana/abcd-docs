@@ -18,6 +18,8 @@ The replay will display:
 There is no need to have the hardware connected to the computer, if the user wants to re-run analyses on old data files or wants to debug analysis functions.
 The simulation may also be used as a teaching aid for new users.
 ABCD is delivered with some `example data files <https://github.com/ec-jrc/abcd/tree/main/data>`_ that can be used to get started.
+Do not expect to find excellent data that can lead to a publication, though!
+The authors kept those for them...
 
 Launching a replay
 ------------------
@@ -294,14 +296,14 @@ The bottom plot shows the bidimensional histogram of the Pulse Shape Discriminat
 In the ``spec`` the PSD parameter is calculated accordingly to
 
 .. math:: \text{PSD parameter} = \frac{Q_{\text{long}} - Q_{\text{short}}}{Q_{\text{long}}} = \frac{Q_{\text{tail}}}{Q_{\text{long}}}
-    :label: eq-PSD
+    :label: eq-tutorial-PSD
 
 
 Where :math:`Q_{\text{long}}` and :math:`Q_{\text{short}}` refer to the results of the two integration results over two intervals for the traditional double integration method for PSD.
 Sometimes the numerator is also called :math:`Q_{\text{tail}}` as it normally represents the tail of the pulses.
 :math:`Q_{\text{long}}` and :math:`Q_{\text{short}}` are the two ``Q`` entries in the processed events binary representation (see :numref:`sec-binary-protocol-events`).
 In general the two values may be calculated differently by the various user libraries of the waveforms analysis module (*e.g.* one may be substituted by the pulse height).
-Whatever the calculations of the two values is, the ``spec`` will calculate that parameter with equation :eq:`eq-PSD`.
+Whatever the calculations of the two values is, the ``spec`` will calculate that parameter with equation :eq:`eq-tutorial-PSD`.
 
 .. _sec-tutorial-spec-plot-controls:
 
