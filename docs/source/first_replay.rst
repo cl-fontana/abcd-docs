@@ -303,6 +303,8 @@ Sometimes the numerator is also called :math:`Q_{\text{tail}}` as it normally re
 In general the two values may be calculated differently by the various user libraries of the waveforms analysis module (*e.g.* one may be substituted by the pulse height).
 Whatever the calculations of the two values is, the ``spec`` will calculate that parameter with equation :eq:`eq-PSD`.
 
+.. _sec-tutorial-spec-plot-controls:
+
 Plotting controls
 `````````````````
 
@@ -316,7 +318,7 @@ The plot controls are:
   During the data inflow the fit is continuously updated with the new statistics, even though sometimes it goes astray and it should be deleted and recalculated.
 * A button to delete all the fits.
 * A button to download the current spectrum in a `CSV file <https://en.wikipedia.org/wiki/Comma-separated_values>`_.
-  If a user wants to generate plots with more advanced options we suggest to save them to file and use the provided tools (see :numref:`sec-display-plotting`).
+  If a user wants to generate plots with more advanced options we suggest to save data to file and use the provided tools (see :numref:`sec-display-plotting`).
 * A button to reset the currently shown channel.
 * A button to reset all the active channels.
 
@@ -352,6 +354,8 @@ Is the channel active both in the digitizer and waveforms analysis configuration
 Is there a filter that deletes all the data?
 If the waveforms analysis module shows a zero rate on that channel, then the ``spec`` will not create a new spectrum.
 
+.. _sec-tutorial-tof-calculator:
+
 The Time-of-Flight (ToF) calculator page
 ----------------------------------------
 
@@ -365,3 +369,62 @@ The Time-of-Flight (ToF) calculator page
 Move on to the last page of this tutorial, the ``ToF_calculator`` page by opening the link in a new tab.
 :numref:`fig-ABCD-ToF-calculator` shows the interface of the ToF calculator module ``tofcalc``.
 
+The ``tofcalc`` module calculates time differences between the pulses of reference channels and the other channels (for a more detailed explanation see :numref:`ch-tofcalc`).
+The pulses of the reference channels constitute the time zero for the coincidence window.
+Since the reference pulse is the time zero, it corresponds to a time offset.
+Time differences are calculated accordingly subtracting the time zero from the timestamps of the other channels.
+Energy histograms are calculated only within the coincidence windows, thus they are probably going to be different than the results of the ``spec``.
+
+.. _sec-tutorial-tof-plot-controls:
+
+Plotting controls
+`````````````````
+
+The controls of the plots are similar to the ``spec`` interface.
+The plot controls are:
+
+* Selection of the shown channel.
+  **Reference channels cannot be shown**, as they constitute the reference for other channels and their ToFs would always be zero.
+* A button to fit the currently shown portion of the ToF or energy spectra.
+  The fit works as in the interface of the ``spec`` module (see :numref:`sec-tutorial-spec-plot-controls`).
+* A button to delete all the fits.
+* A button to download the current ToF spectrum or energy spectrum in a `CSV file <https://en.wikipedia.org/wiki/Comma-separated_values>`_.
+  If a user wants to generate plots with more advanced options we suggest to save data to file and use the provided tools (see :numref:`sec-display-plotting`).
+* A button to reset the currently shown channel.
+* A button to reset all the active channels.
+
+It is possible to save the plot as a PNG image by hovering on the plot and clicking on the little camera on the top-right.
+It is also possible to zoom into the plot by clicking and dragging.
+
+The rates on the page are calculated by ``tofcalc`` and thus they show the amount of data that it actually receives.
+Only the events in coincidence with the reference channels are calculated in the rate, therefore they are probably going to be smaller.
+
+.. note::
+
+    The ``spec`` module only receives the data streams from the rest of the framework.
+    Therefore it is independent from starts and stops of the digitizer or of the waveforms analysis module.
+    If some configurations change we suggest to reset the channels, otherwise the new statistics will accumulate on top of the old, that might cause non-physical artifacts in the spectra.
+    It is also possible to accumulate the spectra over various acquisitions, by not resetting the channels.
+
+The channels configuration
+``````````````````````````
+
+The bottom pane shows the configuration of the ``tofcalc`` module.
+It behaves similarly to the ``waan`` module (see :numref:`sec-waveforms-analysis-page`).
+The user can click to *Get configuration* to read the current configuration of the ToF calculator.
+The text editor will not update the configuration automatically, it always requires the user input.
+The user may change the configuration and send the updated version in any moment, the new configuration will immediately take over.
+The text editor will signal to the user if the configuration format is not a correct JSON.
+
+.. warning::
+    Updated configurations that are sent to ``tofcalc`` from the web-interface are never stored on disk.
+    The user should manually download the configuration from the web-interface, otherwise the changes will be lost.
+
+Try to modify some parameters and see how this immediately affect the waveforms display.
+Refer to :numref:`sec-tofcalc-config` for more information about the configuration file and to :numref:`ch-tofcalc` for more information about ``tofcalc``.
+
+Try again to modify the parameters of the waveforms analysis and see their effect on the ToF spectra.
+Try also to enable the histograms decay while modifying the parameters to see the effects on the spectra.
+
+Congratulations! With this we finished the first tutorial focused on the web-interface of ABCD.
+The next step is to analyze off-line the events files with the provided tools of ABCD.

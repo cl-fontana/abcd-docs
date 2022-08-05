@@ -26,6 +26,9 @@ The applied algorithm is:
       If the timestamps are outside the right time window, stop the search.
       Use the timestamps of the selected events to determine the ToFs.
 
+Since the reference pulse is the time zero, it corresponds to a time offset.
+Time differences are calculated accordingly subtracting the time zero from the timestamps of the other channels.
+
 In addition to the ToF histograms the ``tofcalc`` calculates also the energy vs ToF and energy vs energy histograms (see :numref:`fig-ABCD-ToF-calculator` for a screenshot of the user interface).
 
 Coincidence windows
@@ -47,8 +50,8 @@ Coincidence windows
     
       3           2          2     1    0         1   1      3    2
     ------------------------------------|----------------------------> timestamps
-              |                         t0 <- Time zero of the     |
-              |                         |     coincidence window   |
+              |                         t_0 <- Time zero of the    |
+              |                         |      coincidence window  |
               |-------------------------|--------------------------|
               t_l <- Left edge                       Right edge -> t_r
                      of the window                of the window
@@ -130,3 +133,8 @@ A detailed list of configurations follows:
   - ``bins_ToF`` and ``bins_E``: Integer value that sets the number of bins in the histograms.
   - ``min_ToF`` and ``max_ToF``: Floating point values in nanoseconds, that sets the extrema of the ToF histogram.
   - ``min_E`` and ``max_E``: Floating point values in ADC samples, that sets the extrema of the energy histogram (that are therefore not calibrated).
+
+User interface
+--------------
+
+The tutorial has an extensive description of the web-based user interface (see :numref:`sec-tutorial-tof-calculator`).
