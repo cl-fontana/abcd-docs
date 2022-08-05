@@ -426,5 +426,9 @@ Refer to :numref:`sec-tofcalc-config` for more information about the configurati
 Try again to modify the parameters of the waveforms analysis and see their effect on the ToF spectra.
 Try also to enable the histograms decay while modifying the parameters to see the effects on the spectra.
 
+Shutting down ABCD
+------------------
+
 Congratulations! With this we finished the first tutorial focused on the web-interface of ABCD.
+We can now shut down the running ABCD instance with the script `stop_ABCD.sh <https://github.com/ec-jrc/abcd/blob/main/startup/stop_ABCD.sh>`_.
 The next step is to analyze off-line the events files with the provided tools of ABCD.
