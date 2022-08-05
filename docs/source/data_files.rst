@@ -163,6 +163,7 @@ These scripts may also be used as example scripts for developing custom analysis
 
     Display of the Fourier transform of the waveform of :numref:`fig-waveforms-display`.
 
+.. _sec-files-conversion:
 
 Files conversion
 ----------------
