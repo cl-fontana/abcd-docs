@@ -202,6 +202,10 @@ Data serialization
 Data is transferred using the excellent `ZeroMQ messaging library <http://zeromq.org/>`_.
 PUB-SUB sockets are used for the data streams and statuses streams, and PUSH-PULL sockets for commands streams.
 Since the ZeroMQ is an agnostic mean of transportation, the data streams use serialization protocols implemented according to :numref:`sec-binary-protocol-events` and :numref:`sec-binary-protocol-events`.  
+Data is transferred in messages that contain a set of data.
+Data is not transferred in a continuous stream of events.
+The messages normally maintain their cohesion, so they might be reduced or expanded by particular analyses, but they are not normally split.
+A message split is not forbidden, though.
 All the other streams (*e.g.* commands, statuses, acquisition events,...) are serialized using the `JSON <http://www.json.org/>`_ format.
 It is human readable and it has a very widespread support among programming languages, easing interoperation.
 Also configuration files use the JSON format, easing their delivery over the network.
