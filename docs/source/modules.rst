@@ -23,7 +23,7 @@ On-line analysis modules
 ------------------------
 
 * `spec <https://github.com/ec-jrc/abcd/tree/main/spec/>`_: Histogramming module, that calculates the energy histograms on-line.
-* `tofcalc <https://github.com/ec-jrc/abcd/tree/main/tofcalc/>`_: On-line Time of Flight calculation between some reference channels and the others.
+* `tofcalc <https://github.com/ec-jrc/abcd/tree/main/tofcalc/>`_: On-line Time of Flight calculation between some reference channels and the others (see :numref:`ch-tofcalc` for more information).
 * `waan <https://github.com/ec-jrc/abcd/tree/main/waan/>`_: General purpose waveforms processing module that uses user-supplied pulse processing libraries (see :numref:`ch-waan` for more information).
 
 Datastream filters
