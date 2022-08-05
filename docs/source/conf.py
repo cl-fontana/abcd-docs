@@ -27,6 +27,8 @@ intersphinx_disabled_domains = ['std']
 
 templates_path = ['_templates']
 
+numfig = True
+
 # -- Options for HTML output
 
 html_theme = 'sphinx_rtd_theme'
@@ -34,4 +36,7 @@ html_theme = 'sphinx_rtd_theme'
 # -- Options for EPUB output
 epub_show_urls = 'footnote'
 
-numfig = True
+# -- Options for LaTeX output
+latex_elements = {
+    'papersize': 'a4paper',
+}
