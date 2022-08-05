@@ -239,7 +239,7 @@ Plot the PSD diagram first::
     Using buffer size: 167772160
     Reading: example_data_DT5725_Ch0_Plastic_Cf-252_source_events.ade
         Reading chunk: 0
-    /home/fontana/abcd/data/../bin/plot_PSD.py:179: RuntimeWarning: divide by zero encountered in true_divide
+    /home/user-tutorial/abcd/data/../bin/plot_PSD.py:179: RuntimeWarning: divide by zero encountered in true_divide
       PSDs = (qlongs.astype(np.float64) - qshorts) / qlongs
         Reading chunk: 1
         ERROR: min() arg is an empty sequence
@@ -262,7 +262,7 @@ We can now save the energy spectrum and PSD distribution to CSV files::
     Using buffer size: 167772160
     Reading: example_data_DT5725_Ch0_Plastic_Cf-252_source_events.ade
         Reading chunk: 0
-    /home/fontana/abcd/data/../bin/plot_PSD.py:179: RuntimeWarning: divide by zero encountered in true_divide
+    /home/user-tutorial/abcd/data/../bin/plot_PSD.py:179: RuntimeWarning: divide by zero encountered in true_divide
       PSDs = (qlongs.astype(np.float64) - qshorts) / qlongs
         Reading chunk: 1
         ERROR: min() arg is an empty sequence
@@ -272,3 +272,114 @@ We can now save the energy spectrum and PSD distribution to CSV files::
         Writing qlong histogram to: example_data_DT5725_Ch0_Plastic_Cf-252_source_events_qlong.csv
         Writing PSD histogram to: example_data_DT5725_Ch0_Plastic_Cf-252_source_events_PSD.csv
 
+Studying timestamps
+-------------------
+
+Timestamps are valuable not only to determine Time-of-Flights, but also to diagnose acquisitions and digitizer behavior.
+Plotting the sequence of timestamps shows how the timestamps evolve during an acquisition and can highlight some problems (see :numref:`fig-tutorial-timestamp-problems`).
+
+.. figure:: images/timestamp_problems.png
+    :name: fig-tutorial-timestamp-problems
+    :width: 100%
+    :alt: example of acquisition issues determined by the analysis of subsequent timestamps values
+
+    Plot of the consecutive timestamps values.
+    This plot shows two common issues related to the acquisition.
+    In the black rectangle there is an area in which the slope of the timestamps changes.
+    This change highlights a period of time in which the acquisition rate was changing.
+    This regular saw pattern demonstrates that the timestamp in the digitizer was overflowing.
+
+The plot of the timestamps values should be in general rising monotonically, because timestamps indicate the passing of time.
+On a very small scale there could be regions in which timestamps reduce their values, due to buffering effects in the digitizers and in the framework.
+
+If there are changes in the slope it means that the acquisition rate changed during the acquisition.
+If the acquisition rate is roughly constant then the time delay between two consecutive events should be the same on the average.
+In this case the diagram slope shows the average delay.
+If the slope changes it means that the average delay is changing.
+
+If the plot shows a saw pattern (:numref:`fig-tutorial-timestamp-problems`), it means that the timestamp was resetting during the acquisition.
+There are several possible explanations:
+
+* The digitizer was reset during the acquisition for an error;
+* The timestamp was forcefully reset by the user;
+* The data file is an accumulation of several acquisitions and thus the digitizer was resetting in between them;
+* If the saw pattern is very regular, then it means that the timestamp was overflowing in the digitizer.
+  This last issue can be fixed in post-processing.
+
+To plot the sequence of timestamps, use the script::
+
+    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_timestamps.py -n 0.001953125 -d 0.001 example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_events.ade 4 -h
+    usage: plot_timestamps.py [-h] [-n NS_PER_SAMPLE] [-N DELTA_BINS] [-d DELTA_MIN] [-D DELTA_MAX] [-B BUFFER_SIZE] [-s] file_names [file_names ...] channel
+
+    Plots multiple timestamps sequences and distributions of time differences from ABCD events data files.
+
+    positional arguments:
+      file_names            List of space-separated file names
+      channel               Channel selection (all or number)
+
+    options:
+      -h, --help            show this help message and exit
+      -n NS_PER_SAMPLE, --ns_per_sample NS_PER_SAMPLE
+                            Nanoseconds per sample, if specified the timestamps are converted
+      -N DELTA_BINS, --delta_bins DELTA_BINS
+                            Number of bins in the time differences histogram (default: 1000)
+      -d DELTA_MIN, --delta_min DELTA_MIN
+                            Minimum time difference (default: 0.000000)
+      -D DELTA_MAX, --delta_max DELTA_MAX
+                            Maximum time difference, if not specified the absolute maximum is used
+      -B BUFFER_SIZE, --buffer_size BUFFER_SIZE
+                            Buffer size for file reading (default: 167772160.000000)
+      -s, --save_data       Save histograms to file
+
+We can check the an example data file::
+
+    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_timestamps.py -n 0.001953125 -d 0.001 example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_events.ade 4
+    Using buffer size: 167772160
+    Reading: example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_events.ade
+        Reading chunk: 0
+        Reading chunk: 1
+        ERROR: min() arg is an empty sequence
+        Number of events: 90287
+        Time interval: [0.00162634, 689.395] s
+        Time delta: 689.394 s
+        Measured rate: 130.966 1/s
+        True rate: 103.35 1/s
+        Dead time: -0.00204032 s (-0.000296%)
+
+.. figure:: images/example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_timestamps.png
+    :name: fig-tutorial-timestamps
+    :width: 100%
+    :alt: timestamps sequence in an example file
+
+    Plot of the consecutive timestamps values of an example file.
+
+.. figure:: images/example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_timedifferences.png
+    :name: fig-tutorial-timedifferences
+    :width: 100%
+    :alt: histogram of the time differences between consecutive events in an example file
+
+    Plot of the histogram of the time differences between consecutive events in an example file.
+
+
+:numref:`fig-tutorial-timestamps` shows the resulting timestamps sequence of the examples file.
+In this case the plot is monotonic and shows no particular issues.
+
+Studing the time difference between two consecutive events can give information about the true activity of the source.
+Assuming a Poissonian statistics, it is possible to determine the average emission rate of a source by determining the decay time of the histogram of the time differences.
+If the average rate does not correspond to the calculation of the number of events seen in the acquisition time, it probably means that the deadtime of digitizer was significant.
+The aforementioned script does this calculation and plots the result (:numref:`fig-tutorial-timedifferences`).
+In order to do this calculation it is necessary to know the conversion factor between the timestamps values and nanoseconds.
+For the specific case of the shown example data, the two acquisition rates match:
+
+    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_timestamps.py -n 0.001953125 -d 0.001 example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_events.ade 4
+    Using buffer size: 167772160
+    Reading: example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_events.ade
+        Reading chunk: 0
+        Reading chunk: 1
+        ERROR: min() arg is an empty sequence
+        Number of events: 90287
+        Time interval: [0.00162634, 689.395] s
+        Time delta: 689.394 s
+        Measured rate: 130.966 1/s
+        True rate: 103.35 1/s
+        Dead time: -0.00204032 s (-0.000296%)
