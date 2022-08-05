@@ -152,10 +152,10 @@ A detailed list of configurations follows:
 
 * ``forward_waveforms``: Bool value that enables the forwarding of the processed waveforms.
   A user may disable the forwarding in order to avoid the data saver to save them in the raw files, thus reducing their dimensions.
-* ``enable_additional``: Bool value the enables the forwarding of the additional waveforms.
+* ``enable_additional``: Bool value that enables the forwarding of the additional waveforms.
   These waveforms are calculated by the user libraries for debugging purposes and in general do not need to be stored.
   In case a user wants to store waveforms, the additional waveforms take up a lot of space and are preferably disabled.
-* ``discard_messages``: Bool value the enables the message dropping.
+* ``discard_messages``: Bool value that enables the message dropping.
   In case of experiments with very high data throughput the operating system kernel may decide to drop messages to preserve the memory usage.
   This setting should disable that, but it depends on the operating system and it might not actually work.
 * ``channels``: Array value of objects.
