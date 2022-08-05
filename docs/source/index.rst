@@ -26,5 +26,7 @@ Check :doc:`hardware_support` for further information on the list of tested digi
    data_files
    saving_data
    replay
+   timestamps
    waan
    cofi
+   tofcalc
