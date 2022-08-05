@@ -12,3 +12,4 @@ It progresses into an overview of the user interface and then it starts to intro
 
    installation
    first_replay
+   analyzing_offline
