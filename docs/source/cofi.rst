@@ -1,8 +1,8 @@
 .. _ch-cofi:
 
-===========================================
-Temporal coincidence filer: ``cofi`` module
-===========================================
+============================================
+Temporal coincidence filter: ``cofi`` module
+============================================
 
 ``cofi`` filters the processed events allowing the passage of only the data in coincidence with a reference channel in a specified time-window.
 
