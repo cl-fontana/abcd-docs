@@ -369,7 +369,7 @@ Assuming a Poissonian statistics, it is possible to determine the average emissi
 If the average rate does not correspond to the calculation of the number of events seen in the acquisition time, it probably means that the deadtime of digitizer was significant.
 The aforementioned script does this calculation and plots the result (:numref:`fig-tutorial-timedifferences`).
 In order to do this calculation it is necessary to know the conversion factor between the timestamps values and nanoseconds.
-For the specific case of the shown example data, the two acquisition rates match:
+For the specific case of the shown example data, the two acquisition rates match::
 
     user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_timestamps.py -n 0.001953125 -d 0.001 example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_events.ade 4
     Using buffer size: 167772160
@@ -383,3 +383,178 @@ For the specific case of the shown example data, the two acquisition rates match
         Measured rate: 130.966 1/s
         True rate: 103.35 1/s
         Dead time: -0.00204032 s (-0.000296%)
+
+Calculating Time-of-Flights
+---------------------------
+
+It is also possible to calculate the Time-of-Flight (ToF) between detectors in saved events files, using the script::
+
+    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_ToF.py -h
+    usage: plot_ToF.py [-h] [-n NS_PER_SAMPLE] [-r TIME_RESOLUTION] [-t TIME_MIN] [-T TIME_MAX] [-R ENERGY_RESOLUTION] [-e ENERGY_MIN] [-E ENERGY_MAX] [--reference_energy_min REFERENCE_ENERGY_MIN]
+                       [--reference_energy_max REFERENCE_ENERGY_MAX] [-d PSD_RESOLUTION] [-p PSD_MIN] [-P PSD_MAX] [--reference_PSD_min REFERENCE_PSD_MIN] [--reference_PSD_max REFERENCE_PSD_MAX] [-B BUFFER_SIZE]
+                       [-s] [--save_plots] [-m TOF_MODULO] [-o TOF_OFFSET] [--images_extension IMAGES_EXTENSION]
+                       file_name channel_a channel_b
+
+    Reads an ABCD events file and plots the ToF between two channels
+
+    positional arguments:
+      file_name             Input file name
+      channel_a             Channel selection
+      channel_b             Channel selection
+
+    options:
+      -h, --help            show this help message and exit
+      -n NS_PER_SAMPLE, --ns_per_sample NS_PER_SAMPLE
+                            Nanoseconds per sample (default: 0.001953)
+      -r TIME_RESOLUTION, --time_resolution TIME_RESOLUTION
+                            Time resolution (default: 2.000000)
+      -t TIME_MIN, --time_min TIME_MIN
+                            Time min (default: -200.000000)
+      -T TIME_MAX, --time_max TIME_MAX
+                            Time max (default: 200.000000)
+      -R ENERGY_RESOLUTION, --energy_resolution ENERGY_RESOLUTION
+                            Energy resolution (default: 20.000000)
+      -e ENERGY_MIN, --energy_min ENERGY_MIN
+                            Energy min (default: 0.000000)
+      -E ENERGY_MAX, --energy_max ENERGY_MAX
+                            Energy max (default: 66000.000000)
+      --reference_energy_min REFERENCE_ENERGY_MIN
+                            Reference energy min (default: 0.000000)
+      --reference_energy_max REFERENCE_ENERGY_MAX
+                            Reference energy max (default: 66000.000000)
+      -d PSD_RESOLUTION, --PSD_resolution PSD_RESOLUTION
+                            PSD resolution (default: 0.010000)
+      -p PSD_MIN, --PSD_min PSD_MIN
+                            PSD min (default: -0.100000)
+      -P PSD_MAX, --PSD_max PSD_MAX
+                            PSD max (default: 0.700000)
+      --reference_PSD_min REFERENCE_PSD_MIN
+                            Reference PSD min (default: -0.100000)
+      --reference_PSD_max REFERENCE_PSD_MAX
+                            Reference PSD max (default: 0.700000)
+      -B BUFFER_SIZE, --buffer_size BUFFER_SIZE
+                            Buffer size for file reading (default: 16777216.000000)
+      -s, --save_data       Save histograms to file
+      --save_plots          Save plots to file
+      -m TOF_MODULO, --ToF_modulo TOF_MODULO
+                            If set, the ToF is calculated modulo this value
+      -o TOF_OFFSET, --ToF_offset TOF_OFFSET
+                            If a modulo is set, an offset added to the ToF in ns (default: 0.000000)
+      --images_extension IMAGES_EXTENSION
+                            Define the extension of the image files (default: pdf)
+
+
+The script uses the same algorithm of the ``tofcalc`` module to determine the time difference between pulses from two different detectors (for more information see: :numref:`ch-tofcalc`).
+The script needs to know the conversion factor between the timestamp values and nanoseconds.
+Launch the script as::
+
+    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_ToF.py --save_plots --images_extension=png -n 0.001953125 -r 0.25 -t -80 -T -40 -E 7000 --reference_energy_max 3000 -P 1.0 --reference_PSD_max 1.0 example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade 1 6 
+    Using buffer size: 16777216
+    Energy min: 0.000000
+    Energy max: 7000.000000
+    N_E: 350
+    Reference energy min: 0.000000
+    Reference energy max: 3000.000000
+    N_E: 150
+    Time min: -80.000000
+    Time max: -40.000000
+    N_t: 160
+    Time modulo: 0.000000
+    Time offset: 0.000000
+    PSD min: -0.100000
+    PSD max: 1.000000
+    N_PSD: 110
+    Reference PSD min: -0.100000
+    Reference PSD max: 1.000000
+    N_PSD: 110
+    ### ### Reading chunk: 0
+    Selecting channels...
+    Sorting data...
+    Number of events: 113720
+    Time delta: 38.796681 s
+    Average rate: 2931.178546 Hz
+    Starting the main loop for 113720 events...
+    selected_events: 55456 / 113720 (48.77%)
+    Total time: 0:00:00.732470; time per event: 6.440995 µs
+    ### ### Reading chunk: 1
+    Selecting channels...
+    Sorting data...
+    Number of events: 0
+        Number of events: 113720
+        Time delta: 38.796681 s
+        Average rate: 2931.178546 Hz
+    Saving plot to: example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events_Ch1andCh6_E-histos.png
+    Saving plot to: example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events_Ch1andCh6_E-ToF-histos.png
+    Saving plot to: example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events_Ch1andCh6_PSD-ToF-histos.png
+    Saving plot to: example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events_Ch1andCh6_E-E-histo.png
+
+.. figure:: images/example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events_Ch1andCh6_E-ToF-histos.png
+    :name: fig-tutorial-E-ToF
+    :width: 100%
+    :alt: dependency of energies on the Time-of-Flight in an example file
+
+    Plot of the dependency of the detected energies on the Time-of-Flight in an example file.
+    The reference detector is a LaBr.
+    The other detector is a CeBr detecting the intrinsic radioactivity of the LaBr.
+
+.. figure:: images/example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events_Ch1andCh6_E-E-histo.png
+    :name: fig-tutorial-E-E
+    :width: 100%
+    :alt: relationship between the energies in an example file
+
+    Plot of the relationship between the detected energies in temporal coincidence in an example file.
+    The reference detector is a LaBr.
+    The other detector is a CeBr detecting the intrinsic radioactivity of the LaBr.
+
+:numref:`fig-tutorial-E-ToF` and :numref:`fig-tutorial-E-E` show the results of the ToF analysis on the example data file.
+These plots match the plots calculated on-line in the previous tutorial.
+An attentive reader might notice that the energies have different values.
+Indeed the events file that we just analyzed with the script was calculated on-board by the digitizer.
+The digitizer firmware analyzed the waveforms and provided the processed events.
+In the previous tutorial we used a replay of the raw data, which contains also the waveforms.
+During the replay the waveforms are reanalyzed by the waveforms analysis module of ABCD, which has a configuration that is a little bit different.
+
+Waveforms displaying
+--------------------
+
+We conclude this tutorial by plotting saved waveforms in an example waveforms file.
+Use the script::
+
+    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_waveforms.py -h
+    usage: plot_waveforms.py [-h] [-c CHANNEL] [-n WAVEFORM_NUMBER] [--clock_step CLOCK_STEP] file_name
+
+    Plots waveforms from ABCD waveforms data files. Pressing the left and right keys shows the previous or next waveform. Pressing the up and down keys jump ahead or behind of 10 waveforms, page up and down jump
+    100 waveforms. Pressing the 'h' key resets the view to the full waveform. Pressing the 'f' key toggles between showing the waveform and its Fourier transform. Pressing the 'e' key exports the current waveform
+    to a CSV file.
+
+    positional arguments:
+      file_name             Waveforms file name
+
+    options:
+      -h, --help            show this help message and exit
+      -c CHANNEL, --channel CHANNEL
+                            Channel selection
+      -n WAVEFORM_NUMBER, --waveform_number WAVEFORM_NUMBER
+                            Plots the Nth waveform
+      --clock_step CLOCK_STEP
+                            Step of the ADC sampling of the waveform in ns (default: 2 ns)
+
+This script generates an interactive plot of the waveforms allowing the user to go through the saved waveforms (see :numref:`fig-waveforms-display`).
+It can also calculate the Fourier transform of the currently displayed waveform (see :numref:`fig-waveforms-display-Fourier`).
+
+.. figure:: images/waveforms_display.png
+    :name: fig-waveforms-display
+    :width: 100%
+    :alt: waveforms display from an example file
+
+    Display of a waveform saved in an example file.
+
+.. figure:: images/waveforms_display_Fourier.png
+    :name: fig-waveforms-display-Fourier
+    :width: 100%
+    :alt: waveforms display from an example file
+
+    Display of the Fourier transform of the waveform of :numref:`fig-waveforms-display`.
+
+Congratulations, again! With these plots we conclude this second tutorial.
+We just had an overview of the provided analysis programs, that can give a base on which new users can write their own analysis routines.
