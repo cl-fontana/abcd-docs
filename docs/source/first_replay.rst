@@ -351,3 +351,17 @@ If a channel does not appear in the interface, it means that there was no data g
 Is the channel active both in the digitizer and waveforms analysis configurations?
 Is there a filter that deletes all the data?
 If the waveforms analysis module shows a zero rate on that channel, then the ``spec`` will not create a new spectrum.
+
+The Time-of-Flight (ToF) calculator page
+----------------------------------------
+
+.. figure:: images/ABCD_ToF_calculator.png
+    :name: fig-ABCD-ToF-calculator
+    :width: 100%
+    :alt: page of interface of the ToF calculator of the ABCD web-based user interface
+
+    Web-interface of the Time-of-Flight (ToF) calculator module ``tofcalc``.
+
+Move on to the last page of this tutorial, the ``ToF_calculator`` page by opening the link in a new tab.
+:numref:`fig-ABCD-ToF-calculator` shows the interface of the ToF calculator module ``tofcalc``.
+
