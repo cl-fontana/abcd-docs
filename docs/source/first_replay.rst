@@ -323,6 +323,9 @@ The plot controls are:
 It is possible to save the plot as a PNG image by hovering on the plot and clicking on the little camera on the top-right.
 It is also possible to zoom into the plot by clicking and dragging.
 
+The rates on the page are calculated by ``spec`` and thus they show the amount of data that it actually receives.
+If it is lower than expected or null, there could be a filter somewhere blocking data.
+
 .. note::
 
     The ``spec`` module only receives the data streams from the rest of the framework.
@@ -330,15 +333,15 @@ It is also possible to zoom into the plot by clicking and dragging.
     If some configurations change we suggest to reset the channels, otherwise the new statistics will accumulate on top of the old, that might cause non-physical artifacts in the spectra.
     It is also possible to accumulate the spectra over various acquisitions, by not resetting the channels.
 
-The rates on the page are calculated by ``spec`` and thus they show the amount of data that it actually receives.
-If it is lower than expected or null, there could be a filter somewhere blocking data.
-
 The channels configuration
 ``````````````````````````
 
 It is possible to modify the spectra configurations on the bottom pane of the page.
 A reconfiguration implies a reset of the channels statistics.
 We suggest not to use too many bins in the spectra, as it can considerably increase the memory consumption of the web page.
+This page is meant to be an on-line visualization tool, for mote detailed analyses we suggest to use the provided tools (see :numref:`sec-display-plotting`).
+
+Now try to modify the analysis parameters in the waveforms analysis page and see how they affect the spectra.
 
 Missing spectra of active channels
 ``````````````````````````````````
