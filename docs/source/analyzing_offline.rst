@@ -384,6 +384,79 @@ For the specific case of the shown example data, the two acquisition rates match
         True rate: 103.35 1/s
         Dead time: -0.00204032 s (-0.000296%)
 
+Dependency of the energy spectrum on time
+-----------------------------------------
+
+Another interesting application of timestamps is to study the evolution of the energy spectrum over time.
+Over long acquisition runs a detector might show some gain drifts, due to several reasons.
+Gain drifts might produce a worse resolution on the spectrum, that can be corrected offline.
+There could also be apparent rate changes, because with different gains more noise could pass the energy threshold.
+We can check with the script::
+
+    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_Evst.py -h
+    usage: plot_Evst.py [-h] [-n NS_PER_SAMPLE] [-N EVENTS_COUNT] [-r TIME_RESOLUTION] [-t TIME_MIN] [-T TIME_MAX] [-R ENERGY_RESOLUTION] [-e ENERGY_MIN] [-E ENERGY_MAX] [--save_plots]
+                        [--images_extension IMAGES_EXTENSION]
+                        file_name channel
+
+    Plot the time dependency of the energy spectrum from ABCD events data files.
+
+    positional arguments:
+      file_name             Input file name
+      channel               Channel selection (all or number)
+
+    options:
+      -h, --help            show this help message and exit
+      -n NS_PER_SAMPLE, --ns_per_sample NS_PER_SAMPLE
+                            Nanoseconds per sample (default: 0.001953)
+      -N EVENTS_COUNT, --events_count EVENTS_COUNT
+                            Maximum number of events to be read from file, if -1 then read all events (default: -1.000000)
+      -r TIME_RESOLUTION, --time_resolution TIME_RESOLUTION
+                            Time resolution (default: 2.000000)
+      -t TIME_MIN, --time_min TIME_MIN
+                            Time min (default: -1.000000)
+      -T TIME_MAX, --time_max TIME_MAX
+                            Time max (default: -1.000000)
+      -R ENERGY_RESOLUTION, --energy_resolution ENERGY_RESOLUTION
+                            Energy resolution (default: 20.000000)
+      -e ENERGY_MIN, --energy_min ENERGY_MIN
+                            Energy min (default: 0.000000)
+      -E ENERGY_MAX, --energy_max ENERGY_MAX
+                            Energy max (default: 66000.000000)
+      --save_plots          Save plots to file
+      --images_extension IMAGES_EXTENSION
+                            Define the extension of the image files (default: pdf)
+
+This script needs to know the conversion factor between the timestamps and nanoseconds, in order to determine the real time scale.
+We can run it on the example data::
+
+    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_Evst.py -n 0.001953125 --save_plots --images_extension=png -r 100 -R 10 -e 0 -E 4000 example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade 1
+    ### ### Reading: example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade
+    Energy min: 0.000000 ch
+    Energy max: 4000.000000 ch
+    N_E: 400
+    Time min: 0.145500 s
+    Time max: 19864.046343 s
+    Time delta: 19863.900843 s
+    N_t: 198
+    Saving plot to: example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events_Ch1_Evst.png
+    Saving plot to: example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events_Ch1_Rvst.png
+
+.. figure:: images/example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events_Ch1_Evst.png
+    :name: fig-tutorial-E-T
+    :width: 100%
+    :alt: dependency of the energy spectrum on the time in an example file
+
+    Plot of the dependency of the energy spectrum on the time in an example file.
+
+.. figure:: images/example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events_Ch1_Rvst.png
+    :name: fig-tutorial-R-T
+    :width: 100%
+    :alt: dependency of the acquisition rate on the time in an example file
+
+    Plot of the dependency of the acquisition rate on the time in an example file.
+
+:numref:`fig-tutorial-E-T` and :numref:`fig-tutorial-R-T` show the results of the dependency of the energy spectrum and acquisition on the example data file.
+
 Calculating Time-of-Flights
 ---------------------------
 
@@ -512,7 +585,7 @@ An attentive reader might notice that the energies have different values.
 Indeed the events file that we just analyzed with the script was calculated on-board by the digitizer.
 The digitizer firmware analyzed the waveforms and provided the processed events.
 In the previous tutorial we used a replay of the raw data, which contains also the waveforms.
-During the replay the waveforms are reanalyzed by the waveforms analysis module of ABCD, which has a configuration that is a little bit different.
+During the replay, the waveforms are reanalyzed by the waveforms analysis module of ABCD, which has a configuration that is a little bit different.
 
 Waveforms displaying
 --------------------
