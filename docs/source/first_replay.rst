@@ -107,7 +107,7 @@ This is useful for reanalyzing experiments with very low acquisition rates.
 The shown rates are measured by the digitizer interface and tend to be a bit overestimated.
 The ICR rates are something specific of CAEN digitizers and they are reliable only in high-rate experiments (tens of kHz).
 The average rates are calculated over the whole acquisition time and are more realistic than the real-time ones.
-The *Events log* show the relevant acquisition events saved in the raw file, in this example it will show the start and stop events with their timestamps.
+The *Events log* shows the relevant acquisition events saved in the raw file, in this example it will show the start and stop events with their timestamps.
 The default replay is set to continuously repeat the data file, so in enough time the start and stop messages will accumulate.
 
 The right pane contains a text editor that allows the user to modify the digitizer configuration from the web-interface, without the need of restarting the whole system at every reconfiguration.
@@ -305,6 +305,25 @@ Sometimes the numerator is also called :math:`Q_{\text{tail}}` as it normally re
 In general the two values may be calculated differently by the various user libraries of the waveforms analysis module (*e.g.* one may be substituted by the pulse height).
 Whatever the calculations of the two values is, the ``spec`` will calculate that parameter with equation :eq:`eq-tutorial-PSD`.
 
+.. _sec-tutorial-spec-time-decay:
+
+Time decay of spectra
+`````````````````````
+
+In the ``spec`` module it is possible to enable the time decay of spectra.
+The histograms counts decay in time with an exponential decay with a user-supplied characteristic time.
+New statistics is added on top of the previously decayed counts.
+This feature allows to continuously monitor the evolution in time of the energy spectra.
+For instance it is useful for optimizing detectors geometries or configurations, seeing in real time the effects.
+
+The decay constant is calculated according to:
+
+.. math:: d = \mathrm{e}^{-\Delta t / \tau}
+    :label: eq-spec-time-decay
+
+Where :math:`d` is the decay constant that is multiplied to the histograms counts at every publication.
+:math:`\Delta t` is the time since the last publication and :math:`\tau` is the user-supplied characteristic time.
+
 .. _sec-tutorial-spec-plot-controls:
 
 Plotting controls
@@ -328,7 +347,8 @@ It is possible to save the plot as a PNG image by hovering on the plot and click
 It is also possible to zoom into the plot by clicking and dragging.
 
 The rates on the page are calculated by ``spec`` and thus they show the amount of data that it actually receives.
-If it is lower than expected or null, there could be a filter somewhere blocking data.
+They are therefore less than or roughly equal to the rates shown in the digitizer interface, because the data processing might have filters that reduce the amount of data.
+If rates are too small or null, there could be a filter somewhere completely blocking data.
 
 .. note::
 
@@ -340,17 +360,37 @@ If it is lower than expected or null, there could be a filter somewhere blocking
 The channels configuration
 ``````````````````````````
 
-It is possible to modify the spectra configurations on the bottom pane of the page.
-A reconfiguration implies a reset of the channels statistics.
+The bottom pane shows the configuration of the ``spec`` module.
+It behaves similarly to the ``waan`` and ``tofcalc`` modules (see :numref:`sec-waveforms-analysis-page` and :numref:`sec-tutorial-tof-calculator`).
+THe page at first will show an empty configuration.
+The user can click to *Get configuration* to read the current configuration.
+The text editor will **not** update the configuration automatically, it always requires the user input.
+The text editor will signal to the user if the configuration format is not a correct JSON.
+Channels, that are supposed to have the same configuration, may be grouped in the ``id`` entry (as in the ``waan`` configuration, see :numref:`sec-waan-config`).
+The ``id`` entry may be a single integer number, that indicates the channel to which these settings apply.
+It may be substituted with an array of integer values, indicating that these settings are to be replicated to all these channels.
+
+The user may change the configuration and send the updated version in any moment, the new configuration will immediately take over.
+A reconfiguration implies a reset of the channels statistics and it might take several seconds, thus be patient.
+The reason for this delay is to give precedence to the data acquisition and not to the data visualization.
 We suggest not to use too many bins in the spectra, as it can considerably increase the memory consumption of the web page.
 This page is meant to be an on-line visualization tool, for mote detailed analyses we suggest to use the provided tools (see :numref:`sec-display-plotting`).
 
-Now try to modify the analysis parameters in the waveforms analysis page and see how they affect the spectra.
+.. warning::
+    Updated configurations that are sent to ``spec`` from the web-interface are never stored on disk.
+    The user should manually download the configuration from the web-interface, otherwise the changes will be lost.
+
+Try to modify some parameters and see how this immediately affects the spectra.
+
+Try to modify the parameters of the waveforms analysis and see their effect on the ToF spectra.
+Try to enable the time decay with a very short time, the spectrum counts will start to drop and settle to a low value.
+The replay will continue to supply data and thus the two processes will arrive to an equilibrium value.
 
 Missing spectra of active channels
 ``````````````````````````````````
 
 The ``spec`` module automatically creates new spectra if it detects data generated by channels that are not in the active list.
+If the user clicks on *Get configuration* the new channels should appear in the configuration.
 If a channel does not appear in the interface, it means that there was no data generated by it.
 Is the channel active both in the digitizer and waveforms analysis configurations?
 Is there a filter that deletes all the data?
@@ -412,9 +452,9 @@ The channels configuration
 ``````````````````````````
 
 The bottom pane shows the configuration of the ``tofcalc`` module.
-It behaves similarly to the ``waan`` module (see :numref:`sec-waveforms-analysis-page`).
+It behaves similarly to the ``spec`` and ``waan`` module (see :numref:`sec-tutorial-spectrum-calculator` and :numref:`sec-waveforms-analysis-page`).
 The user can click to *Get configuration* to read the current configuration of the ToF calculator.
-The text editor will not update the configuration automatically, it always requires the user input.
+The text editor will **not** update the configuration automatically, it always requires the user input.
 The user may change the configuration and send the updated version in any moment, the new configuration will immediately take over.
 The text editor will signal to the user if the configuration format is not a correct JSON.
 
