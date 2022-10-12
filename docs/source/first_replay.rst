@@ -267,7 +267,11 @@ Information displayed during data saving
 
 :numref:`fig-ABCD-data-saver-open-files` shows the web-interface with opened files.
 In the status section the data saver shows the opened files with some auxiliary information.
-The growth rate represent the average amount of data saved to disk for the opened file, it could be useful to calculate how big a file would be at the end of an acquisition.
+The overall information gives the sum of the file size of all the opened files during this run.
+The growth rate represent the average amount of data saved to disk for the opened files.
+There is also an indication of the available space in the filesystem to which the files are saved.
+This information might not be available for some filesystems.
+The user-interface calculates the expected time until the filesystem is filled up, according to the current file growth.
 
 The events log show previous acquisitions with their acquisition times and the files dimensions.
 
