@@ -13,7 +13,7 @@ Module structure
 ----------------
 
 .. code-block:: none
-    :name: diagram-simple-connections
+    :name: diagram-waan-structure
     :caption: Diagram of the structure of the waveform analysis module ``waan``.
 
                                                        +-------------------+    
@@ -51,7 +51,7 @@ Module structure
 Analysis functions
 ------------------
 
-Two analysis functions are foreseen in the structure:
+Two analysis functions are foreseen in the structure (see :numref:`diagram-waan-structure`):
 
 1. ``timestamp_analysis()`` that determines the timestamp information of the waveform;
 2. ``energy_analysis()`` that determines the energy information of the waveform.

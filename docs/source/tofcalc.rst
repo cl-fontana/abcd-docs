@@ -67,7 +67,15 @@ It is possible to enable the time decaying of histograms.
 The histograms counts decay in time with an exponential decay with a user-supplied characteristic time.
 New statistics is added on top of the previously decayed counts.
 This feature allows to continuously see the evolution in time of the time difference between two detectors.
-For instance it is useful to optimizing detectors geometries or configurations, seeing in real time the effects of the optimization.
+For instance it is useful for optimizing detectors geometries or configurations, seeing in real time the effects.
+
+The decay constant is calculated according to:
+
+.. math:: d = \mathrm{e}^{-\Delta t / \tau}
+    :label: eq-tofcalc-time-decay
+
+Where :math:`d` is the decay constant that is multiplied to the histograms counts at every publication.
+:math:`\Delta t` is the time since the last publication and :math:`\tau` is the user-supplied characteristic time.
 
 .. _sec-tofcalc-config:
 
