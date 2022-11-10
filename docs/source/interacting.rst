@@ -32,7 +32,7 @@ Command line interface
 
 `tmux <http://tmux.github.io/>`_ is employed in order to run the ABCD instance in the background.
 tmux can create virtual terminals that are not attached to a particular graphical window or terminal.
-The processes can run in a background session of tmux, but the user can still log into that session, check the running status, and then detach from the session without ever stopping the processes.
+The processes can run in a background session of tmux, but the user can still _attach_ that session, check the running status, and then _detach_ from the session without ever stopping the processes.
 In the startup script the system is started in a tmux session called ``ABCD``.
 It is possible to attach to the running tmux session from the user running the ABCD instance by::
 
