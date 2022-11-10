@@ -5,7 +5,7 @@ Starting up an instance
 =======================
 
 The `startup directory <https://github.com/ec-jrc/abcd/tree/main/startup>`_ contains some example scripts for starting up an ABCD instance.
-It is also possible to run an ABCD instance at the startup of the computer (see: :numref:`service`).
+It is also possible to run an ABCD instance at the startup of the computer (see: :numref:`sec-service`).
 New users are suggested to start with `startup_example_replay.sh <https://github.com/ec-jrc/abcd/blob/main/startup/startup_example_replay.sh>`_, so they can see a working system with the example data.
 
 .. warning::
@@ -77,7 +77,7 @@ There are a few steps to check if it is running:
    If one of the modules is not running, try to run it directly in a terminal window. The module can show error messages to indicate the problem.
    To directly run a module in the terminal copy the launch string from the startup script.
 
-.. _acquisition-logging:
+.. _sec-acquisition-logging:
 
 Acquisition events logging
 --------------------------
@@ -86,7 +86,7 @@ The example startup scripts activate some events loggers, that save all the sign
 The loggers are `python scripts <https://github.com/ec-jrc/abcd/blob/main/bin/read_events.py>`_ that read the status sockets and log the events.
 The logs are saved as text files in the ``log/`` directory of the ABCD main folder.
 
-.. _service:
+.. _sec-service:
 
 Automatic startup of ABCD at computer startup
 ---------------------------------------------
