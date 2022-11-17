@@ -88,6 +88,7 @@ Typical system structure
                            | calculation | | module |
                            +-------------+ +--------+
 
+As an example, we may start with a simple experiments and the modules that it requires.
 :numref:`diagram-simple-connections` shows a simplified diagram of typical connections between modules for a simple experiment.
 A digitizer is connected to a module that interfaces the ABCD framework with the hardware.
 The interfacing module translates the digitizer data and status to the ABCD format, for uniform data treatment.
