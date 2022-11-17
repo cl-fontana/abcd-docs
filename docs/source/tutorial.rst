@@ -14,3 +14,4 @@ It progresses into an overview of the user interface and then it starts to intro
    first_replay
    analyzing_offline
    startup_writing
+   waan_library_writing
