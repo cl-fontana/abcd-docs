@@ -93,6 +93,8 @@ Effectively the number goes from a 64 bits value to a 54 bits value, limiting th
 The highest value that can fit in a 64 bits number is about 1.8·10 :sup:`19`, the maximum value that can fit in a 54 bits number is about 1.8·10 :sup:`16`.
 Assuming a 1 ns step value for the ADC clock we have a maximum timestamp for the 64 bits of 1.8·10 :sup:`10` s which is about 570 years.
 For a 54 bits number the maximum is about 7 months, so for experiments that need to run longer than that the number of fractional bits should be lowered.
+Using 8 bits of fractional part we get a precision of about 0.004.
+The maximum number that can fit in the other 56 bits is about 7.2 :sup:`16`, which corresponds to 2.3 years for a 1 ns step value.
 
 Timestamps determination in ABCD
 --------------------------------
