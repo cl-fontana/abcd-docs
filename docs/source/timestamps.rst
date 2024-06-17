@@ -108,3 +108,87 @@ If the waveform is modified by a custom library developed by a user, then the sh
 This is why most timestamp determination libraries have the possibility of disabling the bit shift.
 Some digitizer interfaces also apply a bit shift to the recorded timestamps, because some digitizers might already provide an interpolated value for the timestamp (*e.g.* the Constant Fraction Discrimination algorithm in the CAEN DT5730).
 For these cases the bit shift should be disabled as well.
+
+Case study: timestamps from ADQ36 digitizers with different sampling frequencies
+--------------------------------------------------------------------------------
+
+.. code-block:: none
+    :name: diagram-timestamp-determination-ADQ36
+    :caption: Diagram of the determination of the timestamp in an ADQ36 digitizer.
+
+    .                     ...  <- Waveform signal
+    .                    .   ..
+    .     ADC samples -> X     .
+    .                   .       ..
+    .                   .         ..  
+    .                  .            X..  
+    .                  .               ...
+    .                 .                   ..
+    .                .                      ..X
+    . Threshold -> - . - - - - - - - - - - - - -.- - - - - - - - - - - - - - - -
+    .     level     .|                           ....
+    .             ..                                 ...X...
+    . X.........X.   |                                      ......X.........X...
+    . +----+----+----+----+----+----+----+----+----+----+----+----+----+----+---
+    . |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   
+    . N   N+1  N+2  N+3 <- Timestamp clock ticks  ...  ...  ...  ...  ...  ...  
+    .                ^
+    .                Threshold crossing clock tick
+    . |--------------| <- Record start value (negative)
+    . +---------+---------+---------+---------+---------+---------+---------+---
+    . |         |         |         |         |         |         |         |
+    . M        M+1       M+2 <- ADC samples ticks      ...       ...       ...
+
+Let us consider the practical example of the ADQ36 digitizers from SP Devices.
+These digitizers have two possible functioning modes:
+
+* **4 channel mode**: All four channels sample the signals with a frequency :math:`\nu_{4\text{ch}} = 2.5\ \text{GHz}` which corresponds to a temporal step :math:`\Delta t_{4\text{ch}} = 400\ \text{ps}`;
+* **2 channel mode**: Only two of the channels are active and they sample the signals with a frequency :math:`\nu_{2\text{ch}} = 5\ \text{GHz}` which corresponds to a temporal step :math:`\Delta t_{2\text{ch}} = 200\ \text{ps}`.
+
+The digitizer also provides a timestamp :math:`T` of the threshold crossing point, see diagram :numref:`diagram-timestamp-determination-ADQ36`, with a temporal step :math:`\delta t = 25\ \text{ps}`.
+The relationships between the temporal steps are:
+.. math::
+
+   \Delta t_{4\text{ch}} = 400\ \text{ps} &=  16\cdot \delta t = \delta t \ll 4\ \text{bit} \\
+   \Delta t_{2\text{ch}} = 200\ \text{ps} &=  8\cdot \delta t = \delta t \ll 3\ \text{bit} \\
+
+Where the symbol ":math:`\ll`" represents a bit shift of the binary numbers.
+
+Finally the digitizer provides also a *record start* value :math:`\Delta t_{\text{start}}`, which represents the time span between the threshold crossing point and the actual start of the sampled waveform, see diagram :numref:`diagram-timestamp-determination-ADQ36`.
+The record start has the same temporal step of the timestamps, so :math:`\delta t = 25\ \text{ps}`.
+In the case of :numref:`diagram-timestamp-determination-ADQ36`, the record start is a negative number (:math:`\Delta t_{\text{start}} < 0`), because the waveform start is before the threshold crossing point.
+
+Let us take as the reference the 4 channel mode.
+We want to impose an **8 bits** **fractional part** to the timestamps.
+Then the reference temporal step :math:`\tau`, that we are selecting, is:
+.. math::
+
+   \tau = \Delta t_{4\text{ch}} \gg 8\ \text{bit} = \frac{\Delta t_{4\text{ch}}}{256} = \frac{400\ \text{ps}}{256} = 1.5625\ \text{ps}
+
+We then need to rescale the temporal steps to this reference value:
+
+* **timestamp**: :math:`\delta t = 25\ \text{ps} = 16 \tau = \tau \ll 4\ \text{bit}`.
+* **record start**: :math:`\delta t = 25\ \text{ps} = 16 \tau = \tau \ll 4\ \text{bit}`.
+* **4 channel mode sampling**: :math:`\Delta t_{4\text{ch}} = 400\ \text{ps} = 16\cdot \delta t = 256 \tau = \tau \ll 8\ \text{bit}`.
+* **2 channel mode sampling**: :math:`\Delta t_{2\text{ch}} = 200\ \text{ps} = 8\cdot \delta t = 128 \tau = \tau \ll 7\ \text{bit}`.
+
+In order to achieve a better temporal resolution it is always possible to interpolate the waveform's samples.
+In the case of :numref:`diagram-timestamp-determination-ADQ36`, the threshold-crossing sample :math:`t_0` is between samples `M+1` and `M+2` of the ADC sampling.
+Since :math:`t_0` is interpolated, its value would be fractional with a temporal scale of :math:`\Delta t_{4\text{ch}}` or :math:`\Delta t_{2\text{ch}}` (depending on the functioning mode).
+
+In ABCD the timestamps are determined in order to have a uniform representation for all the channels as a 64 bits unsigned integer, for instance for finding temporal coincidences.
+If there are multiple digitizers with the different modes of operation then the timestamps need to be rescaled:
+.. math::
+
+   T_{\text{ABCD}} &= (T \ll 4\ \text{bit}) + (\Delta_{\text{start}} \ll 4\ \text{bit}) + (t_0 \ll 8\ \text{bit}) \quad \text(4 channel mode) \\
+   T_{\text{ABCD}} &= (T \ll 4\ \text{bit}) + (\Delta_{\text{start}} \ll 4\ \text{bit}) + (t_0 \ll 7\ \text{bit}) \quad \text(2 channel mode)
+
+This calculation can be fully done at the `waan` analysis level or separated in two steps:
+
+1. At the module reading the data from the digitizer `absp` we shift the timestamps to the decided temporal scale, so all the timestamps would then be coherent.
+   Practically speaking, in the `absp` then we set a bit shift of 4 bits.
+2. At the `waan` analysis level we use the specific shift for the interpolated values of :math:`t_0`, so 7 or 8 bits depending on the sampling of the channel.
+   At the `waan` stage it is important to disable the bit shift to the waveform original timestamp :math:`T`, because it was already done at the `absp` level.
+   The analysis function will only multiply the :math:`t_0` value by the chosen bit shift.
+
+This example follows the usual approach in the example libraries of `waan`, but the user is always welcome to customize and fit them to the specific needs.
