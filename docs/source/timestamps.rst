@@ -118,28 +118,30 @@ Case study: timestamps from ADQ36 digitizers with different sampling frequencies
     :name: diagram-timestamp-determination-ADQ36
     :caption: Diagram of the determination of the timestamp in an ADQ36 digitizer.
 
-                         ...  <- Waveform signal
+                         ...  <= Waveform signal
                         .   ..
-         ADC samples -> X     .
+         ADC samples => X     .
                        .       ..
                        .         ..  
                       .            X..  
                       .               ...
                      .                   ..
                     .                      ..X
-     Threshold -> - . - - - - - - - - - - - - -.- - - - - - - - - - - - - - - -
+     Threshold => - . - - - - - - - - - - - - -.- - - - - - - - - - - - - - - -
          level     .|                           ....
                  ..                                 ...X...
      X.........X.   |                                      ......X.........X...
      +----+----+----+----+----+----+----+----+----+----+----+----+----+----+---
      |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   
-     N   N+1  N+2  N+3 <- Timestamp clock ticks  ...  ...  ...  ...  ...  ...  
+     N   N+1  N+2  N+3 <= Timestamp clock ticks  ...  ...  ...  ...  ...  ...  
                     ^
-                    Threshold crossing clock tick
-     |--------------| <- Record start value (negative)
+                    Threshold crossing clock tick = T
+     |--------------| <= Record start value (negative) = Δٖt_start
      +---------+---------+---------+---------+---------+---------+---------+---
      |         |         |         |         |         |         |         |
-     M        M+1       M+2 <- ADC samples ticks      ...       ...       ...
+     M        M+1       M+2 <= ADC samples ticks      ...       ...       ...
+                    ^
+                    Interpolated threshold crossing sample = t_0
 
 Let us consider the practical example of the ADQ36 digitizers from SP Devices.
 These digitizers have two possible functioning modes:
