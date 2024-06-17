@@ -185,8 +185,8 @@ If there are multiple digitizers with the different modes of operation then the 
 
 .. math::
 
-   T_{\text{ABCD}} &= (T \ll 4\ \text{bit}) + (\Delta_{\text{start}} \ll 4\ \text{bit}) + (t_0 \ll 8\ \text{bit}) \quad \text(4 channel mode) \\
-   T_{\text{ABCD}} &= (T \ll 4\ \text{bit}) + (\Delta_{\text{start}} \ll 4\ \text{bit}) + (t_0 \ll 7\ \text{bit}) \quad \text(2 channel mode)
+   T_{\text{ABCD}} &= (T \ll 4\ \text{bit}) + (\Delta t_{\text{start}} \ll 4\ \text{bit}) + (t_0 \ll 8\ \text{bit}) \quad \text{(4 channel mode)} \\
+   T_{\text{ABCD}} &= (T \ll 4\ \text{bit}) + (\Delta t_{\text{start}} \ll 4\ \text{bit}) + (t_0 \ll 7\ \text{bit}) \quad \text{(2 channel mode)}
 
 This calculation can be fully done at the `waan` analysis level or separated in two steps:
 
