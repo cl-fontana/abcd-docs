@@ -190,8 +190,9 @@ If there are multiple digitizers with the different modes of operation then the 
 
 This calculation can be fully done at the ``waan`` analysis level or separated in two steps:
 
-1. At the module reading the data from the digitizer ``absp`` we shift the timestamps to the decided temporal scale, so all the timestamps would then be coherent.
-   Practically speaking, in the ``absp`` then we set a bit shift of 4 bits.
+1. At the module reading the data from the digitizer (``absp``) we shift the timestamps to the decided temporal scale, so all the timestamps would then be coherent.
+   Practically speaking, in the ``absp`` then we should set a bit shift of 4 bits.
+   A word of warning, the sum between :math:`T` and :math:`\Delta t_{\text{start}}` can only be done at the ``absp`` level, because the :math:`\Delta t_{\text{start}}` information is discarded before the data is sent.
 2. At the ``waan`` analysis level we use the specific shift for the interpolated values of :math:`t_0`, so 7 or 8 bits depending on the sampling of the channel.
    At the ``waan`` stage it is important to disable the bit shift to the waveform original timestamp :math:`T`, because it was already done at the ``absp`` level.
    The analysis function will only multiply the :math:`t_0` value by the chosen bit shift.
