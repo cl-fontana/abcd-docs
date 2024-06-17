@@ -52,7 +52,7 @@ Assuming that the clock is 1 GHz, for simplicity, the time step would be of the 
 Thus after 1 s of acquisition time the value of a timestamp can be of the order of 1 billion (10 :sup:`9`).
 Since in some experiments we want to measure time differences of the order of 10 ns or less, we need a very high precision on the timestamp number.
 Floating point values are approximated values and thus they might lose the needed precision.
-64 bits floating point values has a precision of `53 bits <https://en.wikipedia.org/wiki/Floating-point_arithmetic#Range_of_floating-point_numbers>`_.
+64 bits floating point values have a precision of `53 bits <https://en.wikipedia.org/wiki/Floating-point_arithmetic#Range_of_floating-point_numbers>`_.
 The minimum difference between two floating point values depends also on their magnitude.
 Integers, on the other hand, have a fixed precision that does not depend on their magnitude.
 For these reasons, most of the timestamps are stored as 64 bits unsigned integers.
