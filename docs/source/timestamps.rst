@@ -40,8 +40,8 @@ The timestamp clock might be the same clock guiding the ADC sampling or it might
 For instance, in CAEN digitizers the timestamp and ADC clocks are the same while in SP Devices digitizers the timestamp clock is faster than the ADC sampling.
 
 Normally the timestamp is determined when the signal crosses a threshold level, so it has the precision of the digital clock determining it.
-In diagram :numref:`diagram-timestamp-determination` the timestamp value would be `N+3`.
-The threshold crossing happens between samples number `M+1` and `M+2` of the ADC clock.
+In diagram :numref:`diagram-timestamp-determination` the timestamp value would be ``N+3``.
+The threshold crossing happens between samples number ``M+1`` and ``M+2`` of the ADC clock.
 
 Precision of digital numbers
 ----------------------------
@@ -75,13 +75,13 @@ Fixed-point values
 
 The best precision that an integer number can provide is one clock sample, thus we might want to improve that precision (especially for the slower digitizers).
 There is the possibility of obtaining a better precision of the timestamps by interpolating the ADC samples.
-Referring to diagram :numref:`diagram-timestamp-determination`, we can interpolate the samples number `M+1` and `M+2` of the ADC clock.
+Referring to diagram :numref:`diagram-timestamp-determination`, we can interpolate the samples number ``M+1`` and ``M+2`` of the ADC clock.
 Such interpolation might provide a precision better than the timestamp clock.
 
 For the aforementioned reasons we prefer to avoid floating point numbers.
 We can convert the timestamp from an integer value to a fixed-point value, that is a fractional number with a fixed number of fractional digits, see diagram :numref:`diagram-fixed-point`.
 The conversion is easily obtained by multiplying the fixed-point number to a factor.
-With this multiplication we decide that the last `n` digits are the fractional part of the timestamp.
+With this multiplication we decide that the last ``n`` digits are the fractional part of the timestamp.
 
 We can determine the effect of this multiplication by taking as an example a 64 bits unsigned integer.
 If we want to have a fractional precision of about 0.001 we can multiply it by 1000.
@@ -177,7 +177,7 @@ We then need to rescale the temporal steps to this reference value:
 * **2 channel mode sampling**: :math:`\Delta t_{2\text{ch}} = 200\ \text{ps} = 8\cdot \delta t = 128 \tau = \tau \ll 7\ \text{bit}`.
 
 In order to achieve a better temporal resolution it is always possible to interpolate the waveform's samples.
-In the case of :numref:`diagram-timestamp-determination-ADQ36`, the threshold-crossing sample :math:`t_0` is between samples `M+1` and `M+2` of the ADC sampling.
+In the case of :numref:`diagram-timestamp-determination-ADQ36`, the threshold-crossing sample :math:`t_0` is between samples ``M+1`` and ``M+2`` of the ADC sampling.
 Since :math:`t_0` is interpolated, its value would be fractional with a temporal scale of :math:`\Delta t_{4\text{ch}}` or :math:`\Delta t_{2\text{ch}}` (depending on the functioning mode).
 
 In ABCD the timestamps are determined in order to have a uniform representation for all the channels as a 64 bits unsigned integer, for instance for finding temporal coincidences.
@@ -188,12 +188,12 @@ If there are multiple digitizers with the different modes of operation then the 
    T_{\text{ABCD}} &= (T \ll 4\ \text{bit}) + (\Delta t_{\text{start}} \ll 4\ \text{bit}) + (t_0 \ll 8\ \text{bit}) \quad \text{(4 channel mode)} \\
    T_{\text{ABCD}} &= (T \ll 4\ \text{bit}) + (\Delta t_{\text{start}} \ll 4\ \text{bit}) + (t_0 \ll 7\ \text{bit}) \quad \text{(2 channel mode)}
 
-This calculation can be fully done at the `waan` analysis level or separated in two steps:
+This calculation can be fully done at the ``waan`` analysis level or separated in two steps:
 
-1. At the module reading the data from the digitizer `absp` we shift the timestamps to the decided temporal scale, so all the timestamps would then be coherent.
-   Practically speaking, in the `absp` then we set a bit shift of 4 bits.
-2. At the `waan` analysis level we use the specific shift for the interpolated values of :math:`t_0`, so 7 or 8 bits depending on the sampling of the channel.
-   At the `waan` stage it is important to disable the bit shift to the waveform original timestamp :math:`T`, because it was already done at the `absp` level.
+1. At the module reading the data from the digitizer ``absp`` we shift the timestamps to the decided temporal scale, so all the timestamps would then be coherent.
+   Practically speaking, in the ``absp`` then we set a bit shift of 4 bits.
+2. At the ``waan`` analysis level we use the specific shift for the interpolated values of :math:`t_0`, so 7 or 8 bits depending on the sampling of the channel.
+   At the ``waan`` stage it is important to disable the bit shift to the waveform original timestamp :math:`T`, because it was already done at the ``absp`` level.
    The analysis function will only multiply the :math:`t_0` value by the chosen bit shift.
 
-This example follows the usual approach in the example libraries of `waan`, but the user is always welcome to customize and fit them to the specific needs.
+This example follows the usual approach in the example libraries of ``waan``, but the user is always welcome to customize and fit them to the specific needs.
