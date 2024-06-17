@@ -118,28 +118,28 @@ Case study: timestamps from ADQ36 digitizers with different sampling frequencies
     :name: diagram-timestamp-determination-ADQ36
     :caption: Diagram of the determination of the timestamp in an ADQ36 digitizer.
 
-    .                     ...  <- Waveform signal
-    .                    .   ..
-    .     ADC samples -> X     .
-    .                   .       ..
-    .                   .         ..  
-    .                  .            X..  
-    .                  .               ...
-    .                 .                   ..
-    .                .                      ..X
-    . Threshold -> - . - - - - - - - - - - - - -.- - - - - - - - - - - - - - - -
-    .     level     .|                           ....
-    .             ..                                 ...X...
-    . X.........X.   |                                      ......X.........X...
-    . +----+----+----+----+----+----+----+----+----+----+----+----+----+----+---
-    . |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   
-    . N   N+1  N+2  N+3 <- Timestamp clock ticks  ...  ...  ...  ...  ...  ...  
-    .                ^
-    .                Threshold crossing clock tick
-    . |--------------| <- Record start value (negative)
-    . +---------+---------+---------+---------+---------+---------+---------+---
-    . |         |         |         |         |         |         |         |
-    . M        M+1       M+2 <- ADC samples ticks      ...       ...       ...
+                         ...  <- Waveform signal
+                        .   ..
+         ADC samples -> X     .
+                       .       ..
+                       .         ..  
+                      .            X..  
+                      .               ...
+                     .                   ..
+                    .                      ..X
+     Threshold -> - . - - - - - - - - - - - - -.- - - - - - - - - - - - - - - -
+         level     .|                           ....
+                 ..                                 ...X...
+     X.........X.   |                                      ......X.........X...
+     +----+----+----+----+----+----+----+----+----+----+----+----+----+----+---
+     |    |    |    |    |    |    |    |    |    |    |    |    |    |    |   
+     N   N+1  N+2  N+3 <- Timestamp clock ticks  ...  ...  ...  ...  ...  ...  
+                    ^
+                    Threshold crossing clock tick
+     |--------------| <- Record start value (negative)
+     +---------+---------+---------+---------+---------+---------+---------+---
+     |         |         |         |         |         |         |         |
+     M        M+1       M+2 <- ADC samples ticks      ...       ...       ...
 
 Let us consider the practical example of the ADQ36 digitizers from SP Devices.
 These digitizers have two possible functioning modes:
@@ -149,10 +149,11 @@ These digitizers have two possible functioning modes:
 
 The digitizer also provides a timestamp :math:`T` of the threshold crossing point, see diagram :numref:`diagram-timestamp-determination-ADQ36`, with a temporal step :math:`\delta t = 25\ \text{ps}`.
 The relationships between the temporal steps are:
+
 .. math::
 
    \Delta t_{4\text{ch}} = 400\ \text{ps} &=  16\cdot \delta t = \delta t \ll 4\ \text{bit} \\
-   \Delta t_{2\text{ch}} = 200\ \text{ps} &=  8\cdot \delta t = \delta t \ll 3\ \text{bit} \\
+   \Delta t_{2\text{ch}} = 200\ \text{ps} &=  8\cdot \delta t = \delta t \ll 3\ \text{bit}
 
 Where the symbol ":math:`\ll`" represents a bit shift of the binary numbers.
 
@@ -163,6 +164,7 @@ In the case of :numref:`diagram-timestamp-determination-ADQ36`, the record start
 Let us take as the reference the 4 channel mode.
 We want to impose an **8 bits** **fractional part** to the timestamps.
 Then the reference temporal step :math:`\tau`, that we are selecting, is:
+
 .. math::
 
    \tau = \Delta t_{4\text{ch}} \gg 8\ \text{bit} = \frac{\Delta t_{4\text{ch}}}{256} = \frac{400\ \text{ps}}{256} = 1.5625\ \text{ps}
@@ -180,6 +182,7 @@ Since :math:`t_0` is interpolated, its value would be fractional with a temporal
 
 In ABCD the timestamps are determined in order to have a uniform representation for all the channels as a 64 bits unsigned integer, for instance for finding temporal coincidences.
 If there are multiple digitizers with the different modes of operation then the timestamps need to be rescaled:
+
 .. math::
 
    T_{\text{ABCD}} &= (T \ll 4\ \text{bit}) + (\Delta_{\text{start}} \ll 4\ \text{bit}) + (t_0 \ll 8\ \text{bit}) \quad \text(4 channel mode) \\
