@@ -37,7 +37,7 @@ Most digitizers provide a timestamp, that is the characteristic temporal informa
 Normally it is a value obtained with a digital counter, that provides integer numbers.
 This counter counts the number of cycles (ticks) of a digital clock, see diagram :numref:`diagram-timestamp-determination`.
 The timestamp clock might be the same clock guiding the ADC sampling or it might be a different clock.
-For instance, in CAEN digitizers the timestamp and ADC clocks are the same while in SP Devices digitizers the timestamp clock is faster than the ADC sampling.
+For instance, in CAEN digitizers the timestamp and ADC sampling clocks are the same while in SP Devices digitizers the timestamp clock is faster than the ADC sampling.
 
 Normally the timestamp is determined when the signal crosses a threshold level, so it has the precision of the digital clock determining it.
 In diagram :numref:`diagram-timestamp-determination` the timestamp value would be ``N+3``.
@@ -49,7 +49,7 @@ Precision of digital numbers
 Being the timestamp an integer, it is an exact number and its precision is the very same as the digital clock used to determine it.
 Normally the clocks runs at frequencies of the order of few hundreds of MHz or a few GHz.
 Assuming that the clock is 1 GHz, for simplicity, the time step would be of the order of 1 ns.
-Thus after 1 s of acquisition time the value of a timestamp can be of the order of 1 billion (10 :sup:`9`).
+Thus after 1 s of acquisition time, the value of a timestamp can be of the order of 1 billion (10\ :sup:`9`).
 Since in some experiments we want to measure time differences of the order of 10 ns or less, we need a very high precision on the timestamp number.
 Floating point values are approximated values and thus they might lose the needed precision.
 64 bits floating point values have a precision of `53 bits <https://en.wikipedia.org/wiki/Floating-point_arithmetic#Range_of_floating-point_numbers>`_.
@@ -86,15 +86,15 @@ With this multiplication we decide that the last ``n`` digits are the fractional
 We can determine the effect of this multiplication by taking as an example a 64 bits unsigned integer.
 If we want to have a fractional precision of about 0.001 we can multiply it by 1000.
 Since the digital world uses powers of two it is better if we stick to binary numbers.
-The closest power of two to 1000 is 2 :sup:`10`, which is 1024.
+The closest power of two to 1000 is 2\ :sup:`10`, which is 1024.
 In binary arithmetic, a multiplication by 1024 is equivalent to a shift of 10 bits.
 This way we gain 10 bits of fractional part, that are at the lowest significant end of the number, but we lose the 10 most significant bits from the number.
 Effectively the number goes from a 64 bits value to a 54 bits value, limiting the maximum value of the timestamp.
-The highest value that can fit in a 64 bits number is about 1.8·10 :sup:`19`, the maximum value that can fit in a 54 bits number is about 1.8·10 :sup:`16`.
-Assuming a 1 ns step value for the ADC clock we have a maximum timestamp for the 64 bits of 1.8·10 :sup:`10` s which is about 570 years.
+The highest value that can fit in a 64 bits number is about 1.8·10\ :sup:`19`, the maximum value that can fit in a 54 bits number is about 1.8·10\ :sup:`16`.
+Assuming a 1 ns step value for the ADC clock we have a maximum timestamp for the 64 bits of 1.8·10\ :sup:`10` s which is about 570 years.
 For a 54 bits number the maximum is about 7 months, so for experiments that need to run longer than that the number of fractional bits should be lowered.
-Using 8 bits of fractional part we get a precision of about 0.004.
-The maximum number that can fit in the other 56 bits is about 7.2 :sup:`16`, which corresponds to 2.3 years for a 1 ns step value.
+Using 8 bits of fractional part we get a precision of about 0.004 ns, for a 1 ns step value.
+The maximum number that can fit in the other 56 bits is about 7.2\ :sup:`16`, which corresponds to 2.3 years.
 
 Timestamps determination in ABCD
 --------------------------------
@@ -154,8 +154,8 @@ The relationships between the temporal steps are:
 
 .. math::
 
-   \Delta t_{4\text{ch}} = 400\ \text{ps} &=  16\cdot \delta t = \delta t \ll 4\ \text{bit} \\
-   \Delta t_{2\text{ch}} = 200\ \text{ps} &=  8\cdot \delta t = \delta t \ll 3\ \text{bit}
+   \Delta t_{4\text{ch}} = 400\ \text{ps} &=  16\cdot \delta t = (\delta t \ll 4\ \text{bit}) \\
+   \Delta t_{2\text{ch}} = 200\ \text{ps} &=  8\cdot \delta t = (\delta t \ll 3\ \text{bit})
 
 Where the symbol ":math:`\ll`" represents a bit shift of the binary numbers.
 
@@ -169,14 +169,14 @@ Then the reference temporal step :math:`\tau`, that we are selecting, is:
 
 .. math::
 
-   \tau = \Delta t_{4\text{ch}} \gg 8\ \text{bit} = \frac{\Delta t_{4\text{ch}}}{256} = \frac{400\ \text{ps}}{256} = 1.5625\ \text{ps}
+   \tau = (\Delta t_{4\text{ch}} \gg 8\ \text{bit}) = \frac{\Delta t_{4\text{ch}}}{256} = \frac{400\ \text{ps}}{256} = 1.5625\ \text{ps}
 
 We then need to rescale the temporal steps to this reference value:
 
-* **timestamp**: :math:`\delta t = 25\ \text{ps} = 16 \tau = \tau \ll 4\ \text{bit}`.
-* **record start**: :math:`\delta t = 25\ \text{ps} = 16 \tau = \tau \ll 4\ \text{bit}`.
-* **4 channel mode sampling**: :math:`\Delta t_{4\text{ch}} = 400\ \text{ps} = 16\cdot \delta t = 256 \tau = \tau \ll 8\ \text{bit}`.
-* **2 channel mode sampling**: :math:`\Delta t_{2\text{ch}} = 200\ \text{ps} = 8\cdot \delta t = 128 \tau = \tau \ll 7\ \text{bit}`.
+* **timestamp**: :math:`\delta t = 25\ \text{ps} = 16 \tau = (\tau \ll 4\ \text{bit})`.
+* **record start**: :math:`\delta t = 25\ \text{ps} = 16 \tau = (\tau \ll 4\ \text{bit})`.
+* **4 channel mode sampling**: :math:`\Delta t_{4\text{ch}} = 400\ \text{ps} = 16\cdot \delta t = 256 \tau = (\tau \ll 8\ \text{bit})`.
+* **2 channel mode sampling**: :math:`\Delta t_{2\text{ch}} = 200\ \text{ps} = 8\cdot \delta t = 128 \tau = (\tau \ll 7\ \text{bit})`.
 
 In order to achieve a better temporal resolution it is always possible to interpolate the waveform's samples.
 In the case of :numref:`diagram-timestamp-determination-ADQ36`, the threshold-crossing sample :math:`t_0` is between samples ``M+1`` and ``M+2`` of the ADC sampling.
