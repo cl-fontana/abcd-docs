@@ -65,12 +65,11 @@ Refer to the `tmux documentation <https://github.com/tmux/tmux/wiki/Getting-Star
     | [ABCD] 0:bash* 1:wit  2:loggers  3:replay  4:waan>"abcd-tutorial" 11:07 03-Aug-22 |
     +-----------------------------------------------------------------------------------+
 
-There are also utilities in the ``bin/`` folder that give the possibility to interact from the command line:
+There are also utilities that give the possibility to interact from the command line:
 
-* `save_to_file.py <https://github.com/ec-jrc/abcd/blob/main/bin/save_to_file.py>`_: to open a file in which data will be saved. There is the possibility of selecting which file types are to be opened.
-* `close_file.py <https://github.com/ec-jrc/abcd/blob/main/bin/close_file.py>`_: to close the currently open file in which data in being saved.
-* `send_command.py <https://github.com/ec-jrc/abcd/blob/main/bin/send_command.py>`_: to send a command to a module that support commands reception.
-* `stop_ABCD.sh <https://github.com/ec-jrc/abcd/blob/main/startup/stop_ABCD.sh>`_: to stop a currently running ABCD instance (this script is in the ``startup/`` directory).
-* `read_events.py <https://github.com/ec-jrc/abcd/blob/main/bin/read_events.py>`_: to read acquisition events from status sockets of modules. Used as a logger (see :numref:`sec-acquisition-logging`).
-* `commands_receiver.py <https://github.com/ec-jrc/abcd/blob/main/bin/commands_receiver.py>`_: to create a commands socket to receive commands from other modules. Useful for debugging purposes.
-* `read_socket.py <https://github.com/ec-jrc/abcd/blob/main/bin/read_socket.py>`_: to read messages from PUB sockets. Useful for debugging purposes.
+* ``save_to_file.py``: to open a file in which data will be saved. There is the possibility of selecting which file types are to be opened.
+* ``close_file.py``: to close the currently open file in which data in being saved.
+* ``send_command.py``: to send a command to a module that support commands reception.
+* ``/usr/share/abcd/startup/stop_ABCD.sh``: to stop a currently running ABCD instance.
+* ``/usr/share/abcd/examples/commands_receiver.py``: to create a commands socket to receive commands from other modules. Useful for debugging purposes.
+* ``/usr/share/abcd/examples/read_socket.py``: to read messages from PUB sockets. Useful for debugging purposes.
