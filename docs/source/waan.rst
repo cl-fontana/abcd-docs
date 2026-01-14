@@ -71,12 +71,11 @@ For each channel the user shall provide the filename of the libraries.
 The timestamp analysis may be omitted without putting a name on the relative library.
 The libraries may be modified and reloaded at runtime.
 A reconfiguration command always implies a reload of the user libraries.
-Configurations may be sent through the web-interface or using the python script `send_configuration.py <https://github.com/ec-jrc/abcd/blob/main/waan/send_configuration.py>`_.
-The script can send a configuration file stored on disk to a running instance of ``waan``.
+Configurations may be sent through the web-interface.
 
 .. warning::
-    The filenames in the configuration shall follow the conventions of the UNIX dynamic linking functions.
-    If the filename contains a slash (``/``) then the file is searched on the given path, if there is no slash then the library is searched in the standard system library folders.
+    The library filenames in the configuration shall follow the conventions of the UNIX dynamic linking functions.
+    If the filename contains a slash (``/``) then the file is searched on the given path, if there is no slash then the library is searched in the standard system library directories.
     If the user wants to use a local file in the current directory the filename shall start with ``./`` (*e.g.* ``./libCFD.so``).
 
 Each channel configuration may contain a user defined configuration.
@@ -102,8 +101,8 @@ Example configuration
                 "name": "LaBr",
                 "enabled": true,
                 "user_libraries": {
-                    "timestamp": "src/libCFD.so",
-                    "energy": "src/libPSD.so"
+                    "timestamp": "libCFD.so",
+                    "energy": "libPSD.so"
                 },
                 "user_config": {
                     "baseline_samples": 64,
@@ -125,8 +124,8 @@ Example configuration
                 "name": "CeBr",
                 "enabled": true,
                 "user_libraries": {
-                    "timestamp": "src/libCFD.so",
-                    "energy": "src/libPSD.so"
+                    "timestamp": "libCFD.so",
+                    "energy": "libPSD.so"
                 },
                 "user_config": {
                     "baseline_samples": 64,
@@ -147,7 +146,7 @@ Example configuration
     }
 
 :numref:`tab-waan-configuration-example` shows a configuration example.
-More examples can be found in the ``waan/configs/`` folder.
+More examples can be found in the ``/usr/share/abcd/waan/`` directory.
 A detailed list of configurations follows:
 
 * ``forward_waveforms``: Bool value that enables the forwarding of the processed waveforms.
@@ -173,21 +172,32 @@ A detailed list of configurations follows:
   - ``user_config``: An object that is provided to the user libraries by ``waan``.
     Its content depend totally on the user libraries. Refer to their documentation.
 
+.. _sec-waan-compilation:
+
 Libraries compilation
 ---------------------
 
 The user libraries shall be implemented with a C99 interface, so no C++.
-The ``waan/src/`` folder contains some documented examples.
-The user may compile the custom library with the provided Makefile::
+The ``/usr/share/abcd/waan_libraries/`` directory contains some documented examples.
+The user may compile the custom library with the provided Makefile.
+The user should make a new ``.c`` file in the ``waan_libraries/src/`` directory::
 
-    user-tutorial@abcd-tutorial:~/abcd/waan$ make src/libuser.so
-
-Where the source code of the library would be ``src/libuser.c``.
+    user-tutorial@abcd-tutorial:~$ mkdir abcd_tutorial
+    user-tutorial@abcd-tutorial:~$ cd abcd_tutorial
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ cp -r /usr/share/abcd/waan_libraries/ .
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ cd waan_libraries
+    user-tutorial@abcd-tutorial:~/abcd_tutorial/waan_libraries$ nano src/libuser.c
+    user-tutorial@abcd-tutorial:~/abcd_tutorial/waan_libraries$ make 
+    ...
+    ...
+  
+The new library will be ``src/libuser.so``.
+To load the library in ``waan`` use the full path in the configuration, such as: ``/home/user-tutorial/abcd_tutorial/waan_libraries/src/libuser.so``
 
 Example libraries
 -----------------
 
-Some example libraries are provided in the ``waan/src/`` directory.
+Some example libraries are provided in the ``/usr/share/abcd/waan_libraries/`` directory.
 They are extensively commented and documented in the source code.
 These example libraries are provided:
 
@@ -204,3 +214,14 @@ User interface
 --------------
 
 The tutorial has an extensive description of the web-based user interface (see :numref:`sec-waveforms-analysis-page`).
+
+Replay of data files
+--------------------
+
+``waan`` is now able to directly read raw files (``.adr``) and process their waveforms.
+This allows the fastest reanalysis of waveforms stored in data files, compared to the approach using ``replay_raw``.
+The data input option (``-A``) allows the user to select a data source: either a ZeroMQ socket (with a ``tcp://`` prefix) or a file address (with a ``file://`` prefix).
+For a file address the data source should have the form ``file://<path_to_file>`` then data will be read from the raw file.
+The path may be absolute (*e.g.* ``file:///home/user/data/data.adr``) or relative (*e.g.* ``file://../data/data.adr``, mind the number of ``/``).
+The file may not be compressed.
+When the file is finished, ``waan`` will quit and will produce a message in its status socket.
