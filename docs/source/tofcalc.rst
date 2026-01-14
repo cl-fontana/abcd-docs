@@ -115,7 +115,7 @@ Example configuration
     }
 
 :numref:`tab-tofcalc-configuration-example` shows a configuration example.
-More examples can be found in the ``tofcalc/configs/`` folder.
+More examples can be found in the ``/usr/share/abcd/tofcalc/`` folder.
 A detailed list of configurations follows:
 
 * ``ns_per_sample``: Floating point value that is the conversion factor between the timestamp samples and nanoseconds.
