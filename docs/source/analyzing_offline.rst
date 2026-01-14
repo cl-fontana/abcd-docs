@@ -7,7 +7,7 @@ Analysis of saved data files
 In the previous step we replayed some example data and went through the user interface.
 In this second step we will analyze together some example datafiles.
 
-If ABCD was correctly installed (see :numref:`installation`) we can use some example datafiles that are in the ``data/`` folder.
+If ABCD was correctly installed (see :numref:`installation`) we can use some example datafiles that are in the ``/usr/share/abcd/data/`` directory.
 If you followed the first part of the tutorial you should have saved some files along the way and could work on those.
 
 Conversion of events files to ASCII
@@ -17,21 +17,26 @@ Some users prefer to start using their own analysis software to give a look at d
 There are some programs that can convert from events files to ASCII text files.
 Refer to :numref:`sec-files-conversion` for more information about the options for converting files.
 
-Go to the ``data/`` directory in the main ABCD directory to see the available example files::
+Go to the ``/usr/share/abcd/data/`` directory in the main ABCD directory to see the available example files::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ cd ~/abcd/data/
-    user-tutorial@abcd-tutorial:~/abcd/data$ ls
-    example_data_DT5725_Ch0_Plastic_Cf-252_source_events.ade                 
-    example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade 
+    user-tutorial@abcd-tutorial:~$ cd /usr/share/abcd/data/
+    user-tutorial@abcd-tutorial:/usr/share/abcd/data$ ls
+    example_data_DT5725_Ch0_Plastic_Cf-252_source_events.ade
+    example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade
     example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_raw.adr.bz2
     example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_events.ade
     example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_raw.adr.bz2
     example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_waveforms.adw.bz2
+    example_data_SPD214_Ch4_BGO_anticompton_Ch5_LaCl_background_events.ade
+    user-tutorial@abcd-tutorial:/usr/share/abcd/data$ cp example_data_DT5725_Ch0_Plastic_Cf-252_source_events.ade ~/abcd_tutorial/
+    user-tutorial@abcd-tutorial:/usr/share/abcd/data$ cd  ~/abcd_tutorial/
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$
 
-From this directory we can use one of the conversion programs.
+It is advisable to copy the data files in a local directory and not working in ``/usr/share/abcd/data/``.
+From the local directory, we can use one of the conversion programs.
 They all come with an in-line help that we can call with the ``-h`` option::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../convert/ade2ascii.py -h
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ ade2ascii.py -h
     usage: ade2ascii.py [-h] [-o OUTPUT_NAME] file_name
 
     Read and print an ABCD events file converting it to ASCII
@@ -47,16 +52,16 @@ They all come with an in-line help that we can call with the ``-h`` option::
 The program will by default print to the `stdout <https://en.wikipedia.org/wiki/Standard_streams>`_, but we prefer to save the result to a file.
 Thus we use the ``-o`` option::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../convert/ade2ascii.py -o example_data_DT5725_Ch0_Plastic_Cf-252_source_events.tsv example_data_DT5725_Ch0_Plastic_Cf-252_source_events.ade 
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ ade2ascii.py -o example_data_DT5725_Ch0_Plastic_Cf-252_source_events.tsv example_data_DT5725_Ch0_Plastic_Cf-252_source_events.ade 
 
 The result is a `Tab-Separated Values file <https://en.wikipedia.org/wiki/Tab-separated_values>`_ that is a variation of the `Comma-separated_values format <https://en.wikipedia.org/wiki/Comma-separated_values>`_.
 This TSV file is just an ASCII file in which columns are separated by tabs.
 We can check the resulting file using some standard unix tools::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ls -lh example_data_DT5725_Ch0_Plastic_Cf-252_source_events.*
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ ls -lh example_data_DT5725_Ch0_Plastic_Cf-252_source_events.*
     -rw-rw-r-- 1 user-tutorial user-tutorial 1.5M Aug  5 15:57 example_data_DT5725_Ch0_Plastic_Cf-252_source_events.ade
     -rw-rw-r-- 1 user-tutorial user-tutorial 3.1M Aug  5 16:09 example_data_DT5725_Ch0_Plastic_Cf-252_source_events.tsv
-    user-tutorial@abcd-tutorial:~/abcd/data$ head example_data_DT5725_Ch0_Plastic_Cf-252_source_events.tsv 
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ head example_data_DT5725_Ch0_Plastic_Cf-252_source_events.tsv 
     #N	timestamp	qshort	qlong	channel	group counter
     0	136728969619456	161	222	0	0
     1	136729879756800	2630	3033	0	0
@@ -87,16 +92,19 @@ Plotting energy spectra
 We can now plot the energy spectra associated with one of these files.
 Use the script::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_spectra.py -h
-    usage: plot_spectra.py [-h] [-n NS_PER_SAMPLE] [-w SMOOTH_WINDOW] [-R ENERGY_RESOLUTION] [-e ENERGY_MIN] [-E ENERGY_MAX] [-B BUFFER_SIZE] [-d] [-s] [--save_plot] [--images_extension IMAGES_EXTENSION]
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ plot_spectra.py -h
+    usage: plot_spectra.py [-h] [-n NS_PER_SAMPLE] [-w SMOOTH_WINDOW]
+                           [-R ENERGY_RESOLUTION] [-e ENERGY_MIN] [-E ENERGY_MAX]
+                           [-B BUFFER_SIZE] [-d] [-s] [--save_plot]
+                           [--images_extension IMAGES_EXTENSION] [--disable_normalization]
                            file_names [file_names ...] channel
-
+    
     Plots multiple time normalized spectra from ABCD events data files.
-
+    
     positional arguments:
       file_names            List of space-separated file names
       channel               Channel selection (all or number)
-
+    
     options:
       -h, --help            show this help message and exit
       -n NS_PER_SAMPLE, --ns_per_sample NS_PER_SAMPLE
@@ -117,13 +125,16 @@ Use the script::
       --save_plot           Save plot to file
       --images_extension IMAGES_EXTENSION
                             Define the extension of the image files (default: pdf)
+      --disable_normalization
+                            Disable the time normalization of the spectra
+
 
 As usual it has a handy in-line help.
 This script calculates the energy spectra of events files with the given parameters and the selected channel.
 It is able to plot the result to an image, but also to save the result to a CSV file that can be read by something else (like spreadsheet software).
 First we plot the energy spectrum of a LaBr detector in channel 1::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_spectra.py -E 20000 --save_plot --images_extension=png example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade 1
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ plot_spectra.py -E 20000 --save_plot --images_extension=png example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade 1
     Using buffer size: 167772160
     Reading: example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade
         Reading chunk: 0
@@ -146,7 +157,7 @@ First we plot the energy spectrum of a LaBr detector in channel 1::
 :numref:`fig-tutorial-example-spectrum` shows the resulting image generated by the script.
 We can now save the resulting spectrum to a CSV file::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_spectra.py -E 20000 -s example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade 1
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ plot_spectra.py -E 20000 -s example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade 1
     Using buffer size: 167772160
     Reading: example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade
         Reading chunk: 0
@@ -158,7 +169,7 @@ We can now save the resulting spectrum to a CSV file::
         Average rate total: 3.582730 Hz
         Average rate in range: 3.538328 Hz
         Writing qlong histogram to: example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events_ch1_energy.csv
-    user-tutorial@abcd-tutorial:~/abcd/data$ head -n 20 example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events_ch1_energy.csv 
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ head -n 20 example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events_ch1_energy.csv 
     # #energy,counts
     0.000000000000000000e+00,0.000000000000000000e+00
     2.000000000000000000e+01,0.000000000000000000e+00
@@ -186,21 +197,24 @@ Plotting Pulse Shape Discrimination diagrams
 We can now move on to the Pulse Shape Discrimination (PSD) diagrams associated with one of these files.
 Use the script::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_PSD.py -h
-    usage: plot_PSD.py [-h] [-t PSD_THRESHOLD] [-n NS_PER_SAMPLE] [-w SMOOTH_WINDOW] [-r PSD_RESOLUTION] [-p PSD_MIN] [-P PSD_MAX] [-R ENERGY_RESOLUTION] [-e ENERGY_MIN] [-E ENERGY_MAX] [-B BUFFER_SIZE] [-s]
-                       [--polygon_file POLYGON_FILE]
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ plot_PSD.py -h
+    usage: plot_PSD.py [-h] [-t PSD_THRESHOLD] [-n NS_PER_SAMPLE] [-w SMOOTH_WINDOW]
+                       [-r PSD_RESOLUTION] [-p PSD_MIN] [-P PSD_MAX]
+                       [-R ENERGY_RESOLUTION] [-e ENERGY_MIN] [-E ENERGY_MAX]
+                       [-B BUFFER_SIZE] [-s] [--polygon_file POLYGON_FILE]
                        file_names [file_names ...] channel
-
+    
     Plots Pulse Shape Discrimination information from ABCD events data files.
-
+    
     positional arguments:
       file_names            List of space-separated file names
       channel               Channel selection (all or number)
-
+    
     options:
       -h, --help            show this help message and exit
       -t PSD_THRESHOLD, --PSD_threshold PSD_THRESHOLD
-                            Simple PSD threshold for n/gamma discrimination (default: 0.170000)
+                            Simple PSD threshold for n/γ discrimination (default:
+                            0.170000)
       -n NS_PER_SAMPLE, --ns_per_sample NS_PER_SAMPLE
                             Nanoseconds per sample (default: 0.001953)
       -w SMOOTH_WINDOW, --smooth_window SMOOTH_WINDOW
@@ -223,6 +237,7 @@ Use the script::
       --polygon_file POLYGON_FILE
                             Filename with a polygon to be drawn on top of the plot
 
+
 This script calculates the energy spectra and the PSD diagram of events files.
 The PSD parameter is calculated according to:
 
@@ -235,11 +250,11 @@ Where :math:`Q_{\text{long}}` and :math:`Q_{\text{short}}` refer to the results 
 Also this script is able to plot the result to an image, but also to save the result to a CSV file.
 Plot the PSD diagram first::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_PSD.py example_data_DT5725_Ch0_Plastic_Cf-252_source_events.ade 0
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ plot_PSD.py example_data_DT5725_Ch0_Plastic_Cf-252_source_events.ade 0
     Using buffer size: 167772160
     Reading: example_data_DT5725_Ch0_Plastic_Cf-252_source_events.ade
         Reading chunk: 0
-    /home/user-tutorial/abcd/data/../bin/plot_PSD.py:179: RuntimeWarning: divide by zero encountered in true_divide
+    /usr/bin/plot_PSD.py:179: RuntimeWarning: divide by zero encountered in true_divide
       PSDs = (qlongs.astype(np.float64) - qshorts) / qlongs
         Reading chunk: 1
         ERROR: min() arg is an empty sequence
@@ -258,11 +273,11 @@ Plot the PSD diagram first::
 The two data bananas represent the two populations of neutrons and gammas emitted by a :sup:`252` Cf source detected with a plastic scintillation detector.
 We can now save the energy spectrum and PSD distribution to CSV files::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_PSD.py -s example_data_DT5725_Ch0_Plastic_Cf-252_source_events.ade 0
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ plot_PSD.py -s example_data_DT5725_Ch0_Plastic_Cf-252_source_events.ade 0
     Using buffer size: 167772160
     Reading: example_data_DT5725_Ch0_Plastic_Cf-252_source_events.ade
         Reading chunk: 0
-    /home/user-tutorial/abcd/data/../bin/plot_PSD.py:179: RuntimeWarning: divide by zero encountered in true_divide
+    /usr/bin/plot_PSD.py:179: RuntimeWarning: divide by zero encountered in true_divide
       PSDs = (qlongs.astype(np.float64) - qshorts) / qlongs
         Reading chunk: 1
         ERROR: min() arg is an empty sequence
@@ -308,7 +323,7 @@ There are several possible explanations:
 
 To plot the sequence of timestamps, use the script::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_timestamps.py -n 0.001953125 -d 0.001 example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_events.ade 4 -h
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ plot_timestamps.py -n 0.001953125 -d 0.001 example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_events.ade 4 -h
     usage: plot_timestamps.py [-h] [-n NS_PER_SAMPLE] [-N DELTA_BINS] [-d DELTA_MIN] [-D DELTA_MAX] [-B BUFFER_SIZE] [-s] file_names [file_names ...] channel
 
     Plots multiple timestamps sequences and distributions of time differences from ABCD events data files.
@@ -333,7 +348,7 @@ To plot the sequence of timestamps, use the script::
 
 We can check the an example data file::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_timestamps.py -n 0.001953125 -d 0.001 example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_events.ade 4
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ plot_timestamps.py -n 0.001953125 -d 0.001 example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_events.ade 4
     Using buffer size: 167772160
     Reading: example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_events.ade
         Reading chunk: 0
@@ -364,14 +379,14 @@ We can check the an example data file::
 :numref:`fig-tutorial-timestamps` shows the resulting timestamps sequence of the examples file.
 In this case the plot is monotonic and shows no particular issues.
 
-Studing the time difference between two consecutive events can give information about the true activity of the source.
+Studying the time difference between two consecutive events can give information about the true activity of the source.
 Assuming a Poissonian statistics, it is possible to determine the average emission rate of a source by determining the decay time of the histogram of the time differences.
 If the average rate does not correspond to the calculation of the number of events seen in the acquisition time, it probably means that the deadtime of digitizer was significant.
 The aforementioned script does this calculation and plots the result (:numref:`fig-tutorial-timedifferences`).
 In order to do this calculation it is necessary to know the conversion factor between the timestamps values and nanoseconds.
 For the specific case of the shown example data, the two acquisition rates match::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_timestamps.py -n 0.001953125 -d 0.001 example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_events.ade 4
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ plot_timestamps.py -n 0.001953125 -d 0.001 example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_events.ade 4
     Using buffer size: 167772160
     Reading: example_data_DT5730_Ch2_LaBr3_Ch4_LYSO_Ch6_YAP_events.ade
         Reading chunk: 0
@@ -393,7 +408,7 @@ Gain drifts might produce a worse resolution on the spectrum, that can be correc
 There could also be apparent rate changes, because with different gains more noise could pass the energy threshold.
 We can check with the script::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_Evst.py -h
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ plot_Evst.py -h
     usage: plot_Evst.py [-h] [-n NS_PER_SAMPLE] [-N EVENTS_COUNT] [-r TIME_RESOLUTION] [-t TIME_MIN] [-T TIME_MAX] [-R ENERGY_RESOLUTION] [-e ENERGY_MIN] [-E ENERGY_MAX] [--save_plots]
                         [--images_extension IMAGES_EXTENSION]
                         file_name channel
@@ -429,7 +444,7 @@ We can check with the script::
 This script needs to know the conversion factor between the timestamps and nanoseconds, in order to determine the real time scale.
 We can run it on the example data::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_Evst.py -n 0.001953125 --save_plots --images_extension=png -r 100 -R 10 -e 0 -E 4000 example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade 1
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ plot_Evst.py -n 0.001953125 --save_plots --images_extension=png -r 100 -R 10 -e 0 -E 4000 example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade 1
     ### ### Reading: example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade
     Energy min: 0.000000 ch
     Energy max: 4000.000000 ch
@@ -462,7 +477,7 @@ Calculating Time-of-Flights
 
 It is also possible to calculate the Time-of-Flight (ToF) between detectors in saved events files, using the script::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_ToF.py -h
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ plot_ToF.py -h
     usage: plot_ToF.py [-h] [-n NS_PER_SAMPLE] [-r TIME_RESOLUTION] [-t TIME_MIN] [-T TIME_MAX] [-R ENERGY_RESOLUTION] [-e ENERGY_MIN] [-E ENERGY_MAX] [--reference_energy_min REFERENCE_ENERGY_MIN]
                        [--reference_energy_max REFERENCE_ENERGY_MAX] [-d PSD_RESOLUTION] [-p PSD_MIN] [-P PSD_MAX] [--reference_PSD_min REFERENCE_PSD_MIN] [--reference_PSD_max REFERENCE_PSD_MAX] [-B BUFFER_SIZE]
                        [-s] [--save_plots] [-m TOF_MODULO] [-o TOF_OFFSET] [--images_extension IMAGES_EXTENSION]
@@ -521,7 +536,7 @@ The script uses the same algorithm of the ``tofcalc`` module to determine the ti
 The script needs to know the conversion factor between the timestamp values and nanoseconds.
 Launch the script as::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_ToF.py --save_plots --images_extension=png -n 0.001953125 -r 0.25 -t -80 -T -40 -E 7000 --reference_energy_max 3000 -P 1.0 --reference_PSD_max 1.0 example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade 1 6 
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ plot_ToF.py --save_plots --images_extension=png -n 0.001953125 -r 0.25 -t -80 -T -40 -E 7000 --reference_energy_max 3000 -P 1.0 --reference_PSD_max 1.0 example_data_DT5730_Ch1_LaBr3_Ch6_CeBr3_Ch7_CeBr3_coincidence_events.ade 1 6 
     Using buffer size: 16777216
     Energy min: 0.000000
     Energy max: 7000.000000
@@ -593,7 +608,7 @@ Waveforms displaying
 We conclude this tutorial by plotting saved waveforms in an example waveforms file.
 Use the script::
 
-    user-tutorial@abcd-tutorial:~/abcd/data$ ../bin/plot_waveforms.py -h
+    user-tutorial@abcd-tutorial:~/abcd_tutorial$ plot_waveforms.py -h
     usage: plot_waveforms.py [-h] [-c CHANNEL] [-n WAVEFORM_NUMBER] [--clock_step CLOCK_STEP] file_name
 
     Plots waveforms from ABCD waveforms data files. Pressing the left and right keys shows the previous or next waveform. Pressing the up and down keys jump ahead or behind of 10 waveforms, page up and down jump
