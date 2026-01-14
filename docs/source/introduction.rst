@@ -19,7 +19,7 @@ A distributed system has a very versatile structure that may be changed on-the-f
 Parallel and distributed programming are inherent between the various processes.
 The computational load may be easily shared over the network to different computers.
 Data is distributed over streams and data processors may be dynamically connected.
-Several processes may run different analyses in parallel on-line on the same data, for early testing phases. 
+Several processes may run different analyses in parallel, on-line, on the same data, for early testing phases. 
 
 The processes are isolated by the communication sockets and can exchange only the relevant information.
 This isolation simplifies the collaboration between developers, as independently developed processes may be attached to the network and heterogeneous programming languages can coexist.
@@ -38,10 +38,10 @@ Their simplicity eases their development and thus their debugging and assessment
 Each simple process tends to be also more reliable than a huge monolithic combination of modules.
 Being lightweight they may be run in resource constraint systems, such as embedded computers, but also in data intensive experiments.
 
-Normally modules use the communication sockets:
+Normally modules use the following communication sockets:
 
 * Status socket, implemented as a `ZeroMQ PUB <https://zguide.zeromq.org/docs/chapter1/#Getting-the-Message-Out>`_, that produces JSON messages containing information on the running status and significant events;
-* Commands socket, implemented as a `ZeroMQ PULL <https://zguide.zeromq.org/docs/chapter1/#Divide-and-Conquer>`_, that receives JSON messages allowing other processes to control this process;
+* Commands socket, implemented as a `ZeroMQ PULL <https://zguide.zeromq.org/docs/chapter1/#Divide-and-Conquer>`_, that receives JSON messages allowing other processes to control the current process;
 * Data socket, implemented as a ZeroMQ PUB, that produces binary messages containing the data acquired by signal digitizers and the corresponding processes data.
 
 A module may read messages from one or multiple modules on these sockets and send command messages to other modules.
@@ -88,8 +88,8 @@ Typical system structure
                            | calculation | | module |
                            +-------------+ +--------+
 
-As an example, we may start with a simple experiments and the modules that it requires.
-:numref:`diagram-simple-connections` shows a simplified diagram of typical connections between modules for a simple experiment.
+As an example, we may start with a simple experiment and the modules that it requires.
+:numref:`diagram-simple-connections` shows a simplified diagram of typical connections between modules.
 A digitizer is connected to a module that interfaces the ABCD framework with the hardware.
 The interfacing module translates the digitizer data and status to the ABCD format, for uniform data treatment.
 The waveforms data that is produced is then analyzed by an on-line waveforms processing module.
