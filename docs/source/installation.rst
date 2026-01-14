@@ -12,8 +12,59 @@ The modules that do not interface with some hardware are the most portable, on t
 Download
 --------
 
-`git <https://git-scm.com/>`_ is required to download the latest version of the ABCD source code.
-The ABCD repository can be downloaded as::
+The `official repository <https://github.com/ec-jrc/abcd/>`_ offers the download of pre-compiled packages under the `releases page <https://github.com/ec-jrc/abcd/releases>`_.
+"Assets" section of each release offers the links to the packages.
+Three packages are offered and they are meant for Ubuntu 24.04 LTS:
+
+* `abcd-core_<version number>_amd64.deb` That installs the core system of ABCD, for this tutorial it is sufficient to install this package;
+* `abcd-abcd_<version number>_amd64.deb` That installs the support for CAEN digitizers, install it only if you desire to use such digitizers;
+* `abcd-absp_<version number>_amd64.deb` That installs the support for SP Devices digitizers, install it only if you desire to use such digitizers.
+
+.. _packages-installation:
+
+Packages installation
+---------------------
+
+Use the standard Ubuntu tools to install packages::
+
+    sudo dpkg -i abcd-core_<version number>_amd64.deb
+
+If there were some missing packages which ABCD depends on, install them with::
+
+    sudo apt install --fix-broken
+
+The supported distribution for the packages is: Ubuntu 24.04 LTS.
+The installation places the ABCD modules, tools and scripts in the ``$PATH``.
+Examples scripts, configurations, libraries and data are stored in the directory ``/usr/share/abcd/``.
+It is advisable to copy the examples to a local directory, thus not working directly in  ``/usr/share/abcd/``.
+
+
+Manual installation
+-------------------
+
+A manual installation is needed only if your system is not supported, or you want to modify the source code of ABCD, and it is not necessary for following the tutorial.
+The list of required libraries and tools is:
+
+* `git <https://git-scm.com/>`_, for fetching and updating the source code;
+* `cmake <https://cmake.org/>`_, for building the framework;
+* `tmux <https://github.com/tmux/tmux/wiki>`_, for running ABCD in the background;
+* `clang <https://clang.llvm.org/>`_ or `gcc <https://clang.llvm.org/>`_, for compiling the framework;
+* the `ZeroMQ messaging library <https://zeromq.org/>`_, for data delivery between modules;
+* the `GNU Scientific Library <https://www.gnu.org/software/gsl/>`_, for some useful functions;
+* `JsonCpp <https://github.com/open-source-parsers/jsoncpp>`_ **and** `Jansson <https://github.com/akheron/jansson>`_, for decoding and encoding JSON messages;
+* `Python 3 <https://www.python.org/>`_, for analysis and automation scripts, together with the libraries: `PyZMQ <https://github.com/zeromq/pyzmq>`_, `NumPy <https://numpy.org>`_, `SciPy <https://scipy.org/>`_ and `Matplotlib <https://matplotlib.org/>`_;
+* `Node.js <https://nodejs.org/>`_ 12 or later, with NPM, for running the web interface;
+* `zlib <https://zlib.net/>`_ and `libbzip2 <https://www.sourceware.org/bzip2/>`_, for data compression;
+
+If the hardware interfacing modules need to be compiled, then their libraries are needed before their compilation step.
+Check the section :numref:`vendors-libraries` for some tips.
+
+.. _manual-installation-compilation:
+
+Compilation
+```````````
+
+Use ``git`` to download the repository::
 
     user-tutorial@abcd-tutorial:~$ git clone https://github.com/ec-jrc/abcd.git
     Cloning into 'abcd'...
@@ -24,161 +75,62 @@ The ABCD repository can be downloaded as::
     Receiving objects: 100% (2084/2084), 67.80 MiB | 7.38 MiB/s, done.
     Resolving deltas: 100% (1291/1291), done.
 
-This command will create a new directory called ``abcd`` with the whole source code.
-It is also possible to manually download a zip file with the source code from: <https://github.com/ec-jrc/abcd/archive/refs/heads/main.zip>
-But the method with git is the preferred one, as it will make easier to keep the source code updated.
+Then, use CMake to build ABCD from its directory::
 
-.. note::
+    cd abcd
+    cmake -S . -B build
+    cmake --build build --parallel 8
 
-    The rest of the installation instructions assume that ABCD was downloaded in ``~/abcd/``.
+The installation can be launched with CMake::
 
-.. _automatic-installation:
+    sudo cmake --install build
 
-Automatic installation
-----------------------
+If installing manually on linux with ``cmake --install ...``, then ``ldconfig`` should be launched after the installation.
+``ldconfig`` configures the cache of the system-wide libraries, so that the waan libraries can be located by ``waan``.
 
-There is an automatic `installation script <https://github.com/ec-jrc/abcd/blob/main/install_dependencies.sh>`_, that tries to identify the current Linux distribution, install the required packages and compile the framework.
-The supported distributions for the installation script are: Ubuntu 20.04 LTS, Ubuntu 22.04 LTS, and Rocky Linux 8.
+Modules interfacing with hardware are not built by default, as they depend on specific vendors' libraries.
+To compile the specific modules use the ``-D BUILD_<MODULE>=ON`` option in the configuration phase, as in::
 
-.. note::
+    cmake -S . -B build -D BUILD_ABSP=ON -D BUILD_ABCD=ON
+    cmake --build build --parallel 8
+    sudo cmake --install build
 
-    The installation script runs some commands with ``sudo`` and thus the user should have the permissions for that.
+Ubuntu package(s) generation and installation
+`````````````````````````````````````````````
 
-.. note::
+The Ubuntu packages may be generated with CMake and CPack.
+The default prefix for CMake on UNIX platforms is ``/usr/local``, but it should be changed to ``/usr`` at the configuration phase to generate a proper ``deb`` package.
+Some scripts need to be configured with the proper prefix and this is done at the configuration phase.
+There is no need to run ``ldconfig`` after the installation, as it is automatically run by the ``postinst`` script of the ``deb`` package.
 
-    The following software is required in order to run the installation: `Linux Standard Base (LSB) utilities <https://en.wikipedia.org/wiki/Linux_Standard_Base>`_, used only in the installer script to detect the Linux distribution.
-    It can be installed with:
-    
-    * On Debian and Ubuntu: ``apt-get install lsb-release``
-    * On CentOS and Fedora: ``dnf install redhat-lsb``
+To generate and install the ``deb`` package::
 
-Run the installation script in the folder in which ABCD was downloaded as::
-   
-    user-tutorial@abcd-tutorial:~$ cd abcd
-    user-tutorial@abcd-tutorial:~/abcd$ ./install_dependencies.sh
-    ######################
-    # Kernel name: Linux #
-    ######################
-    #######################
-    # Linux system found! #
-    #######################
-    ####################################################
-    # Detected distribution: Ubuntu; major release: 22 #
-    ####################################################
-    #######################
-    # Upgrading system... #
-    #######################
-    [sudo] password for user-tutorial: 
-    Hit:1 http://fr.archive.ubuntu.com/ubuntu jammy InRelease                                                                                                                         
-    Get:2 http://fr.archive.ubuntu.com/ubuntu jammy-updates InRelease [114 kB]                                                                                                        
+    cmake -S . -B build --install-prefix /usr
+    cmake --build build --parallel 8
+    cd build/
+    cpack
+    sudo dpkg -i abcd-core-...
 
-        (...)
+Hardware interfacing modules need to be explicitly enabled as in the standard build.
+If enabled, separate packages are generated for each hardware module, as in::
 
-    ##################################################################
-    # Installing required packages, for Ubuntu 22 Jammy Jellyfish... #
-    ##################################################################
-    Reading package lists... Done
-    Building dependency tree... Done
-    Reading state information... Done
+    cmake -S . -B build -D BUILD_ABSP=ON -D BUILD_ABCD=ON --install-prefix /usr
+    cmake --build build --parallel 8
+    cd build/
+    cpack
+    sudo dpkg -i abcd-core-...
+    sudo dpkg -i abcd-absp-...
+    sudo dpkg -i abcd-abcd-...
 
-        (...)
+If there were some missing packages on which ABCD depends on, install them with::
 
-    #########################################
-    # The required packages were installed. #
-    #########################################
-    #####################
-    # Compiling ABCD... #
-    #####################
-    make -C dasa; make -C chafi; make -C cofi; make -C wafi; make -C wadi; make -C enfi; make -C pufi; make -C gzad; make -C unzad; make -C fifo; make -C waps; make -C waph; make -C waan; make -C spec; make -C tofcalc; make -C replay; make -C convert;
-   
-        (...)
-   
-    #############################################
-    # Installing the dependencies of node.js... #
-    #############################################
-
-        (...)
-
-    #############################
-    # Installation successfull! #
-    #############################
-
-In this preview the wordy parts of the installation were abridged for the sake of simplicity.
-If any of these steps fail, you should refer to :numref:`manual-installation` for a more detailed help.
+    sudo apt install --fix-broken
 
 .. warning::
     
-    In the installation phase of the dependencies of node.js, oftentimes npm complaints about security issues and suggests to launch ``npm audit``.
+    In the installation phase of the dependencies of node.js, sometimes ``npm`` complaints about security issues and suggests to launch ``npm audit``.
     This is a normal warning that can be ignored, keeping in mind that ABCD does not guarantee **any** kind of security.
     ABCD instances should be run in a protected environment in which malicious users can do no harm.
-
-
-.. warning::
-    
-    The hardware interfacing modules are not compiled, as they depend on specific libraries that might not be installed.
-    The user should compile the suitable modules for the hardware (*e.g.* ``abcd``, ``abad2``, ``abps5000a``, ``abrp``, or ``absp``).
-    See :numref:`vendors-libraries` for suggestions on installing the vendors' libraries.
-
-.. _manual-installation:
-
-Manual installation
--------------------
-
-If the installation script (see :numref:`automatic-installation`) fails or the system is not supported, it is still possible to manually install the dependencies.
-The list of required libraries and tools is:
-
-* `git <https://git-scm.com/>`_, for fetching and updating the source code;
-* `tmux <https://github.com/tmux/tmux/wiki>`_, for running ABCD in the background;
-* `clang <https://clang.llvm.org/>`_ or `gcc <https://clang.llvm.org/>`_, for compiling the framework;
-* the `ZeroMQ messaging library <https://zeromq.org/>`_, for data delivery between modules;
-* the `GNU Scientific Library <https://www.gnu.org/software/gsl/>`_, for some useful functions;
-* `JsonCpp <https://github.com/open-source-parsers/jsoncpp>`_ **and** `Jansson <https://github.com/akheron/jansson>`_, for decoding and encoding JSON messages;
-* `Python 3 <https://www.python.org/>`_, for analysis and automation scripts, together with the libraries: `PyZMQ <https://github.com/zeromq/pyzmq>`_, `NumPy <https://numpy.org>`_, `SciPy <https://scipy.org/>`_ and `Matplotlib <https://matplotlib.org/>`_;
-* `Node.js <https://nodejs.org/>`_ 12 or later, with NPM, for running the web interface;
-* `zlib <https://zlib.net/>`_ and `libbzip2 <https://www.sourceware.org/bzip2/>`_, for data compression;
-
-.. _manual-installation-compilation:
-
-Post-installation step: compilation
-```````````````````````````````````
-
-When the dependecies are installed the ABCD system should be compiled.
-The default compiler is clang. It is also possible to change the compiler to gcc modifying the file `common_definitions.mk <https://github.com/ec-jrc/abcd/blob/main/common_definitions.mk>`_ in the abcd main directory.
-The global Makefile compiles the whole system just by running in the abcd main directory as::
-
-    user-tutorial@abcd-tutorial:~/abcd$ make
-    make -C dasa; make -C chafi; make -C cofi; make -C wafi; make -C wadi; make -C enfi; make -C pufi; make -C gzad; make -C unzad; make -C fifo; make -C waps; make -C waph; make -C waan; make -C spec; make -C tofcalc; make -C replay; make -C convert;
-   
-        (...)
-
-.. warning::
-
-    The hardware interfacing modules are not compiled, as they depend on specific libraries that might not be installed.
-    The user should compile the suitable modules for the hardware (*e.g.* ``abcd``, ``abad2``, ``abps5000a``, ``abrp``, or ``absp``).
-    See :numref:`vendors-libraries` for suggestions on installing the vendors' libraries.
-
-.. _manual-installation-wit:
-
-Post-installation step: web-interface dependencies
-``````````````````````````````````````````````````
-
-The web-based user interface requires some modules for node.js that must be installed independently.
-From the abcd main directory::
-
-    user-tutorial@abcd-tutorial:~/abcd$ cd wit/
-    user-tutorial@abcd-tutorial:~/abcd/wit$ npm install
-
-These will download all the required packages for the Node.js server and install them locally in the ``wit/`` folder.
-If it is not a clean installation of ABCD, this step might lead to errors.
-If this occurs we suggest to delete the ``node_modules/`` directory in ``wit/`` and launch again ``npm install``.
-
-.. warning::
-    
-    In the installation phase of the dependencies of node.js, oftentimes npm complaints about security issues and suggests to launch ``npm audit``.
-    This is a normal warning that can be ignored, keeping in mind that ABCD does not guarantee **any** kind of security.
-    ABCD instances should be run in a protected environment in which malicious users can do no harm.
-
-Once all the packages have been installed the system is ready to be run from the abcd main folder.
 
 .. _vendors-libraries:
 
@@ -207,7 +159,7 @@ SP Devices
 ``````````
 
 SP Devices digitizers are interfaced by the ``absp`` module.
-For the SP Devices digitizers, the `ADQAPI <https://www.spdevices.com/documents/user-guides/68-adqapi-reference-guide/file>`_ for linux is required, refer to the `official vendor's page <https://www.spdevices.com/products/software>`_.
+The `ADQAPI <https://www.spdevices.com/documents/user-guides/68-adqapi-reference-guide/file>`_ for linux is required for the SP Devices digitizers, refer to the `official vendor's page <https://www.spdevices.com/products/software>`_.
 
 Digilent
 ````````
