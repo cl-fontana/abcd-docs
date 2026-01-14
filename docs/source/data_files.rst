@@ -124,7 +124,7 @@ Most of the data filters and on-line processing would read and produce this kind
 Example files
 -------------
 
-In the ``data/`` folder there are some examples of ABCD data files.
+In the ``/usr/share/abcd/data/`` folder there are some examples of ABCD data files.
 There are events and waveforms files that can be used to test analysis scripts and raw files for examples of replaying old measurements (see :numref:`replay`).
 The raw and waveforms files have been compressed with bzip.
 
@@ -133,30 +133,31 @@ The raw and waveforms files have been compressed with bzip.
 Displaying and plotting saved files
 -----------------------------------
 
-The events file can be plotted with the scripts in the ``bin/`` folder:
+The events file can be plotted with the scripts installed by ABCD (they are all installed in ``/usr/bin/``):
 
-* `plot_spectra.py <https://github.com/ec-jrc/abcd/blob/main/bin/plot_spectra.py>`_: to plot the energy spectra of a channel.
+* ``plot_spectra.py``: to plot the energy spectra of a channel.
   It can also save the spectra in a CSV file.
-* `plot_PSD.py <https://github.com/ec-jrc/abcd/blob/main/bin/plot_PSD.py>`_: to plot the Pulse Shape Discrimination information of a channel.
+* ``plot_PSD.py``: to plot the Pulse Shape Discrimination information of a channel.
   It can also save the spectra in a CSV file.
-* `plot_timestamps.py <https://github.com/ec-jrc/abcd/blob/main/bin/plot_timestamps.py>`_: to plot the timestamps values of a channel and calculating the physical rate assuming a Poissonian statistics.
+* ``plot_timestamps.py``: to plot the timestamps values of a channel and calculating the physical rate assuming a Poissonian statistics.
   This is useful to determine if the DAQ has deadtime.
-* `plot_ToF.py <https://github.com/ec-jrc/abcd/blob/main/bin/plot_ToF.py>`_: to plot time differences between events originating from two difference acquisition channels.
+* ``plot_ToF.py``: to plot time differences between events originating from two difference acquisition channels.
   It can also save the selected coincidence events to a CSV file.
-* `plot_Evst_simple.py <https://github.com/ec-jrc/abcd/blob/main/bin/plot_Evst_simple.py>`_: to plot the time dependency of the energy spectrum of a channel.
-* `plot_waveforms.py <https://github.com/ec-jrc/abcd/blob/main/bin/plot_waveforms.py>`_: interactive display of waveforms stored in a waveforms file.
+* ``plot_Evst.py``: to plot the time dependency of the energy spectrum of a channel.
+* ``plot_waveforms.py``: interactive display of waveforms stored in a waveforms file.
   It can also compute the Fourier transform of a waveform (see :numref:`fig-waveforms-display` and :numref:`fig-waveforms-display-Fourier`).
 
 These scripts may also be used as example scripts for developing custom analysis procedures on the data files.
+The example script ``/usr/share/abcd/examples/simple_plot_spectrum_PSD.py`` plots the energy spectra and PSD diagram, but its implementation is much simpler for new users.
 
 .. _sec-files-conversion:
 
 Files conversion
 ----------------
 
-Several conversion tools are provided in the ``convert/`` directory, they can convert between data formats of ABCD and ASCII.
+Several conversion scripts can convert between data formats of ABCD and ASCII.
 
-* The `ade2ascii.py <https://github.com/ec-jrc/abcd/blob/main/convert/ade2ascii.py>`_ python script and the `ade2ascii <https://github.com/ec-jrc/abcd/blob/main/convert/ade2ascii.c>`_ C99 program convert the events files to an ASCII file with the format::
+* The ``ade2ascii.py`` python script and the ``ade2ascii`` C99 program convert the events files to an ASCII file with the format (they are both installed in ``/usr/bin/``)::
 
     #N      timestamp       qshort  qlong   channel    group counter
     0       3403941888      1532    1760    4          0
@@ -166,22 +167,22 @@ Several conversion tools are provided in the ``convert/`` directory, they can co
     4       6212482048      775     892     4          0
     ...     ...             ...     ...     ...        ...
 
-* `ade2ascii.m <https://github.com/ec-jrc/abcd/blob/main/convert/ade2ascii.m>`_ shows how to read the data files in Octave (and theoretically Matlab) and prints them in ASCII with the same format as `ade2ascii.py <https://github.com/ec-jrc/abcd/blob/main/convert/ade2ascii.py>`_.
-* `adw2ascii <https://github.com/ec-jrc/abcd/blob/main/convert/adw2ascii.c>`_  converts the waveforms files to an ASCII file in which the waveforms samples are written line by line.
-* `adr2adeadw.py <https://github.com/ec-jrc/abcd/blob/main/convert/adr2adeadw.py>`_ extracts from raw files the events and the waveforms files.
-* `adr2configs.py <https://github.com/ec-jrc/abcd/blob/main/convert/adr2configs.py>`_ extracts from raw files the configurations.
-* `adr2events.py <https://github.com/ec-jrc/abcd/blob/main/convert/adr2events.py>`_ extracts from raw files the acquisition events (*e.g.* acquisition start, stop, errors...).
+* ``ade2ascii.m``: shows how to read the data files in Octave (and theoretically Matlab) and prints them in ASCII with the same format as ``ade2ascii.py``.
+* ``adw2ascii``: converts the waveforms files to an ASCII file in which the waveforms samples are written line by line.
+* ``adr2adeadw.py``: extracts from raw files the events and the waveforms files.
+* ``adr2configs.py``: extracts from raw files the configurations.
+* ``adr2events.py``: extracts from raw files the acquisition events (*e.g.* acquisition start, stop, errors...).
 
 Other files utilities
 ---------------------
 
 There are also other utilities for the events files:
 
-* `split_events_files.py <https://github.com/ec-jrc/abcd/blob/main/bin/split_events_files.py>`_ to cut an events file in chunks on the basis of the timestamps.
+* ``split_ade.py`` to cut an events file in chunks on the basis of the timestamps.
   It can be used to select a temporal subrange of the input file and split it in data files with uniform temporal lengths.
   To split an events file on the basis of the number of events, use the standard Unix program `split <https://en.wikipedia.org/wiki/Split_(Unix)>`_.
   Events are 16 bytes words and thus the split dimension should be a multiple of 16 bytes.
-* `rescale_timestamp.py <https://github.com/ec-jrc/abcd/blob/main/bin/rescale_timestamp.py>`_ to rescale the timestamp entry of all the events in an events file.
+* ``/usr/share/abcd/examples/rescale_timestamp.py`` to rescale the timestamp entry of all the events in an events file.
 
 Data serialization
 ------------------
