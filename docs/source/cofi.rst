@@ -113,3 +113,19 @@ The optional arguments are:
 - ``-n <ns_per_sample>``: Conversion factor of nanoseconds per timestamp sample.
 - ``-k``: Enable keep reference event, even if there are no coincidences.
   The reference events will be always forwarded but not the other events.
+
+Replay of data files
+--------------------
+
+``cofi`` is now able to directly read data files (``.adr`` and ``.ade``) and process the stored events in them.
+This allows the fastest coincidence filtering of the data stored in data files, compared to the approach using ``replay_raw`` or ``replay_events``.
+The data input option (``-A``) allows the user to select a data source: either a ZeroMQ socket (with a ``tcp://`` prefix) or a file address (with a ``file://`` prefix).
+For a file address the data source should have the form ``file://<path_to_file>`` then data will be read from the raw file.
+The path may be absolute (*e.g.* ``file:///home/user/data/data.adr``) or relative (*e.g.* ``file://../data/data.adr``, mind the number of ``/``).
+The file may not be compressed.
+For ade files the address may have the form ``file://<path_to_file>[:<buffer_size>]``.
+The ``<buffer_size>`` may be optionally specified as a number of events that will end in the generated messages, the default value is 1000.
+Events files (``.ade``) contain only the processed events and do not have anymore the information of how the events were grouped by the digitizers in the buffers.
+The buffer size is used to group events simulating the buffering of the digitizer.
+The suggestion is to use a buffer as big as possible.
+When the file is finished, ``cofi`` will quit.
