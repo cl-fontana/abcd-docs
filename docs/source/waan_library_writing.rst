@@ -4,6 +4,11 @@
 Advanced topic: writing a simple ``waan`` library
 =================================================
 
+.. warning::
+
+    This tutorial is in general still valid, but the compilation details are outdated.
+    See :numref:`sec-waan-compilation` for more information.
+
 In this tutorial we write a simple library for ``waan`` that determines the energy of a waveform by a simple intregration.
 The average of the first *N* samples will be the **baseline** of the waveform.
 Two integration gates will be used, in order to apply the *double integration method* for Pulse Shape Discrimination (PSD).
