@@ -4,6 +4,10 @@
 Advanced topic: writing a startup script
 ========================================
 
+.. warning::
+
+    This tutorial is outdated since the ABCD compilation is managed by CMake.
+
 In this tutorial we will see:
 
 - How to connect different processes through their sockets;
